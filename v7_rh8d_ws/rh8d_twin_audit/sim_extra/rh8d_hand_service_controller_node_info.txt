@@ -1,0 +1,21 @@
+/rh8d_hand_service_controller
+  Subscribers:
+    /dynamic_joint_states: control_msgs/msg/DynamicJointState
+  Publishers:
+    /hand_trajectory_controller/joint_trajectory: trajectory_msgs/msg/JointTrajectory
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+    /rosout: rcl_interfaces/msg/Log
+  Service Servers:
+    /rh8d/hand_command: rh8d_mujoco_interfaces/srv/HandCommand
+    /rh8d_hand_service_controller/describe_parameters: rcl_interfaces/srv/DescribeParameters
+    /rh8d_hand_service_controller/get_parameter_types: rcl_interfaces/srv/GetParameterTypes
+    /rh8d_hand_service_controller/get_parameters: rcl_interfaces/srv/GetParameters
+    /rh8d_hand_service_controller/list_parameters: rcl_interfaces/srv/ListParameters
+    /rh8d_hand_service_controller/set_parameters: rcl_interfaces/srv/SetParameters
+    /rh8d_hand_service_controller/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically
+  Service Clients:
+
+  Action Servers:
+
+  Action Clients:
+

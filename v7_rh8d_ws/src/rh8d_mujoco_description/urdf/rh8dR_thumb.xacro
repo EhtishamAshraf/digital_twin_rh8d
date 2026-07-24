@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Thumb axis -->
+    <link name="Thumb_axis">
+    <inertial>
+      <origin xyz="7.36613628871e-07 -0.0127283513389 0.00779959601156" rpy="0 0 0"/>
+      <mass value="0.00876232"/>
+      <inertia ixx="7.97659e-07" ixy="-2.13078e-11" ixz="1.46581e-10" iyy="5.89711e-07" iyz="1.57887e-07" izz="6.43805e-07"/>
+    </inertial>
+    <visual>
+        <origin xyz="-2.04910140453e-07 -0.0143541102422 0.0211785487783" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/thumb_base.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="Thumb_axis_color">
+        <color rgba="0.74902 0.74902 0.74902 1.0"/>
+        </material>
+    </visual>
+    <collision>
+        <origin xyz="-2.04910140453e-07 -0.0143541102422 0.0211785487783" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/thumb_base.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+    </collision>
+    </link>
+
+    <!-- Joint: palm_assembly:1 -> Thumb_axis -->
+    <joint name="Thumb_axis--palm_assembly:1" type="revolute">
+        <origin xyz="-0.040359256602 -0.0128548401414 0.0384218295136" rpy="1.20616678326 0.474749123724 -1.5208118789"/>
+        <axis xyz="0.0 -0.866025655797 0.5000003546"/>
+        <parent link="palm_assembly:1"/>
+        <child link="Thumb_axis"/>
+        <dynamics damping="0.04" friction="0.005"/>
+        <limit effort="2.5" lower="-0.001" upper="1.57079632679" velocity="5.0"/>
+    </joint>
+
+    <!-- Thumb Methacarpal -->
+    <link name="Thumb_Methacarpal">
+    <inertial>
+      <origin xyz="0.00506187100169 -0.000203739665014 -0.00873380148432" rpy="0 0 0"/>
+      <mass value="0.00441372"/>
+      <inertia ixx="4.06755e-07" ixy="1.25794e-10" ixz="-2.15458e-11" iyy="4.30738e-07" iyz="3.03927e-08" izz="1.53447e-07"/>
+    </inertial>
+    <visual>
+        <origin xyz="0.00506253767579 1.23612574093e-07 -0.0107930266817" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/thumb_phalanx.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="Thumb_Methacarpal_color">
+        <color rgba="0.74902 0.74902 0.74902 1.0"/>
+        </material>
+    </visual>
+    <collision>
+        <origin xyz="0.00506253767579 1.23612574093e-07 -0.0107930266817" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/thumb_phalanx.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+    </collision>
+    </link>
+
+    <!-- Joint: Thumb_axis -> Thumb_Methacarpal -->
+    <joint name="Thumb_Methacarpal--Thumb_axis" type="revolute">
+        <origin xyz="-0.00512513682608 -0.0143543479571 0.0211784114035" rpy="-3.14159265359 0 0"/>
+        <axis xyz="-1.0 0.0 0.0"/>
+        <parent link="Thumb_axis"/>
+        <child link="Thumb_Methacarpal"/>
+        <dynamics damping="0.04" friction="0.005"/>
+        <limit effort="2.5" lower="-0.001" upper="1.57079632679" velocity="5.0"/>
+    </joint>
+
+    <!-- Thumb Proximal -->
+    <link name="Thumb_Proximal">
+    <inertial>
+      <origin xyz="0.00506186145872 -0.000203736676427 -0.00873380148432" rpy="0 0 0"/>
+      <mass value="0.00441372"/>
+      <inertia ixx="4.06755e-07" ixy="1.25794e-10" ixz="-2.15458e-11" iyy="4.30738e-07" iyz="3.03927e-08" izz="1.53447e-07"/>
+    </inertial>
+    <visual>
+        <origin xyz="0.00506252813282 1.26601161748e-07 -0.0107930266817" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/thumb_phalanx.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="Thumb_Proximal_color">
+        <color rgba="0.74902 0.74902 0.74902 1.0"/>
+        </material>
+    </visual>
+    <collision>
+        <origin xyz="0.00506252813282 1.26601161748e-07 -0.0107930266817" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/thumb_phalanx.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+    </collision>
+    </link>
+
+    <!-- Joint: Thumb_Methacarpal -> Thumb_Proximal -->
+    <joint name="Thumb_Proximal--Thumb_Methacarpal" type="revolute">
+        <origin xyz="-0.000562562378419 -2.358974244e-07 -0.0215860713527" rpy="0 0 0"/>
+        <axis xyz="-1.0 0.0 0.0"/>
+        <parent link="Thumb_Methacarpal"/>
+        <child link="Thumb_Proximal"/>
+
+        <mimic joint="Thumb_Methacarpal--Thumb_axis"
+                multiplier="0.9"
+                offset="0.0"/>
+
+        <dynamics damping="0.02" friction="0.0"/>
+        <limit effort="2.5" lower="-0.001" upper="1.57079632679" velocity="5.0"/>
+    </joint>
+
+    <!-- Thumb Distal -->
+    <link name="Thumb_Distal">
+    <inertial>
+      <origin xyz="0.00560256228551 -0.00262056530945 -0.0121248013919" rpy="0 0 0"/>
+      <mass value="0.00650951"/>
+      <inertia ixx="5.02476e-07" ixy="-6.66361e-09" ixz="5.02846e-09" iyy="5.2803e-07" iyz="-5.85168e-08" izz="3.30404e-07"/>
+    </inertial>
+    <visual>
+        <origin xyz="0.00506251081285 -1.31622580696e-07 0" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/tip.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="Thumb_Distal_color">
+        <color rgba="0.74902 0.74902 0.74902 1.0"/>
+        </material>
+    </visual>
+    <collision>
+        <origin xyz="0.00506251081285 -1.31622580696e-07 0" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/tip.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+    </collision>
+    </link>
+
+    <!-- Joint: Thumb_Proximal -> Thumb_Distal -->
+    <joint name="Thumb_Distal--Thumb_Proximal" type="revolute">
+        <origin xyz="-6.23673772064e-05 6.16562595063e-07 -0.0215858466878" rpy="0 0 0"/>
+        <axis xyz="-1.0 0.0 0.0"/>
+        <parent link="Thumb_Proximal"/>
+        <child link="Thumb_Distal"/>
+
+        <mimic joint="Thumb_Proximal--Thumb_Methacarpal"
+                multiplier="0.9"
+                offset="0.0"/>
+
+        <dynamics damping="0.02" friction="0.0"/>
+        <limit effort="2.5" lower="-0.001" upper="1.57079632679" velocity="5.0"/>
+    </joint>
+
+</robot>

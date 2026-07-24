@@ -1,0 +1,146 @@
+header:
+  stamp:
+    sec: 663
+    nanosec: 111999991
+  frame_id: ''
+joint_names:
+- forearm:1--base:1
+- palm_axis:1--forearm:1
+- palm_assembly:1--palm_axis:1
+- Thumb_axis--palm_assembly:1
+- Thumb_Methacarpal--Thumb_axis
+- Index_Proximal--palm_assembly:1
+- Middle_Proximal--palm_assembly:1
+- Ring_Proximal--palm_assembly:1
+reference:
+  positions: []
+  velocities: []
+  accelerations: []
+  effort: []
+  time_from_start:
+    sec: 0
+    nanosec: 0
+feedback:
+  positions: []
+  velocities: []
+  accelerations: []
+  effort: []
+  time_from_start:
+    sec: 0
+    nanosec: 0
+error:
+  positions:
+  - -0.0016001181030394311
+  - -0.010176346480074216
+  - 0.0011170464036856747
+  - -0.001033734121972829
+  - 0.6454571087211276
+  - 0.20304596502585992
+  - 0.15176006356638894
+  - 0.21536946925652967
+  velocities: []
+  accelerations: []
+  effort: []
+  time_from_start:
+    sec: 0
+    nanosec: 0
+output:
+  positions: []
+  velocities: []
+  accelerations: []
+  effort: []
+  time_from_start:
+    sec: 0
+    nanosec: 0
+desired:
+  positions:
+  - 0.0
+  - 0.0
+  - 0.0
+  - 1.57
+  - 0.7100000000000005
+  - 0.7750000000000006
+  - 0.7650000000000006
+  - 0.8000000000000006
+  velocities:
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  accelerations:
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  effort: []
+  time_from_start:
+    sec: 0
+    nanosec: 0
+actual:
+  positions:
+  - 0.0016001181030394311
+  - 0.010176346480074216
+  - -0.0011170464036856747
+  - 1.571033734121973
+  - 0.06454289127887293
+  - 0.5719540349741407
+  - 0.6132399364336116
+  - 0.5846305307434709
+  velocities: []
+  accelerations: []
+  effort: []
+  time_from_start:
+    sec: 638
+    nanosec: 119999991
+multi_dof_joint_names: []
+multi_dof_reference:
+  transforms: []
+  velocities: []
+  accelerations: []
+  time_from_start:
+    sec: 0
+    nanosec: 0
+multi_dof_feedback:
+  transforms: []
+  velocities: []
+  accelerations: []
+  time_from_start:
+    sec: 0
+    nanosec: 0
+multi_dof_error:
+  transforms: []
+  velocities: []
+  accelerations: []
+  time_from_start:
+    sec: 0
+    nanosec: 0
+multi_dof_output:
+  transforms: []
+  velocities: []
+  accelerations: []
+  time_from_start:
+    sec: 0
+    nanosec: 0
+multi_dof_desired:
+  transforms: []
+  velocities: []
+  accelerations: []
+  time_from_start:
+    sec: 0
+    nanosec: 0
+multi_dof_actual:
+  transforms: []
+  velocities: []
+  accelerations: []
+  time_from_start:
+    sec: 0
+    nanosec: 0
+---

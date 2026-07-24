@@ -1,0 +1,33 @@
+# Default initial positions for ur5e's ros2_control fake system 
+
+# This position is defined for MuJoCo in the following file: src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_ros2_control_node.cpp
+# initial_positions:
+#   shoulder_pan_joint: 1.5708
+#   shoulder_lift_joint: 0.0
+#   elbow_joint: 1.5708
+#   wrist_1_joint: 1.5708
+#   wrist_2_joint: 0.0
+#   wrist_3_joint: 0.0
+
+# -------------------
+# These positions place the arm in an ideal Pose for testing the RH8D/fingers behaviour for.
+# 1. Cylinder
+# 2. Tennis ball
+# -------------------
+
+initial_positions:
+  shoulder_pan_joint: 1.4927
+  shoulder_lift_joint: -0.8678
+  elbow_joint: -2.43
+  wrist_1_joint: -0.6596
+  wrist_2_joint: -0.0347
+  wrist_3_joint: 0.05
+
+
+# initial_positions:
+#   shoulder_pan_joint: 1.5621
+#   shoulder_lift_joint: -0.615
+#   elbow_joint: -1.7530
+#   wrist_1_joint: 0.0000
+#   wrist_2_joint: 0.0000
+#   wrist_3_joint: -3.0895

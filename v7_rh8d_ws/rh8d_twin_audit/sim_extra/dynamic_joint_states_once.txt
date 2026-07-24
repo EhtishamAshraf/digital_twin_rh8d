@@ -1,0 +1,286 @@
+A message was lost!!!
+	total count change:1
+	total count: 1---
+header:
+  stamp:
+    sec: 664
+    nanosec: 181999991
+  frame_id: base_link
+joint_names:
+- Index_Middle--Index_Proximal
+- thumb_tip_force
+- Index_Distal--Index_Middle
+- Index_Proximal--palm_assembly:1
+- Ring_Distal--Ring_Middle
+- middle_tip_force
+- Small_Proximal--palm_assembly:1
+- Ring_Proximal--palm_assembly:1
+- index_tip_force
+- Thumb_Methacarpal--Thumb_axis
+- Small_Distal--Small_Middle
+- ring_tip_force
+- Thumb_axis--palm_assembly:1
+- palm_assembly:1--palm_axis:1
+- forearm:1--base:1
+- Small_Middle--Small_Proximal
+- wrist_3_joint
+- palm_axis:1--forearm:1
+- palm_range
+- Middle_Distal--Middle_Middle
+- small_tip_force
+- wrist_2_joint
+- Middle_Proximal--palm_assembly:1
+- wrist_1_joint
+- shoulder_pan_joint
+- shoulder_lift_joint
+- elbow_joint
+- Thumb_Distal--Thumb_Proximal
+- Thumb_Proximal--Thumb_Methacarpal
+- Ring_Middle--Ring_Proximal
+- Middle_Middle--Middle_Proximal
+interface_values:
+- interface_names:
+  - position
+  - velocity
+  - effort
+  values:
+  - 0.8357444149749337
+  - -6.453685188340594e-06
+  - 0.6202785337926687
+- interface_names:
+  - x
+  - y
+  - z
+  values:
+  - -7.3434744623816535e-06
+  - 5.160967352776182e-06
+  - 3.951658704554851e-06
+- interface_names:
+  - position
+  - velocity
+  - effort
+  values:
+  - 1.1028214694485223
+  - -1.4223203988710303e-05
+  - 0.5441316559310956
+- interface_names:
+  - position
+  - effort
+  - velocity
+  values:
+  - 0.5719544313814624
+  - 0.5522126835907153
+  - -6.571582735440389e-06
+- interface_names:
+  - position
+  - velocity
+  - effort
+  values:
+  - 0.9673671602633365
+  - 0.00010692477569372707
+  - 0.6304832639919105
+- interface_names:
+  - x
+  - y
+  - z
+  values:
+  - 0.47441697183738596
+  - -1.8472698018173195
+  - -2.3545267606907183
+- interface_names:
+  - position
+  - velocity
+  - effort
+  values:
+  - 0.35361275890840804
+  - 7.312862855339222e-05
+  - 0.0
+- interface_names:
+  - position
+  - effort
+  - velocity
+  values:
+  - 0.5847190947162331
+  - 0.7084307655826964
+  - 8.148275862756873e-05
+- interface_names:
+  - x
+  - y
+  - z
+  values:
+  - 1.0621796637180252
+  - -2.6395964651937485
+  - -4.487306073015535
+- interface_names:
+  - position
+  - effort
+  - velocity
+  values:
+  - 0.06454335477433674
+  - 0.32127398306441446
+  - -1.1212481477636725e-05
+- interface_names:
+  - position
+  - velocity
+  - effort
+  values:
+  - 1.1115278337748868
+  - 9.098833975091175e-05
+  - 0.0
+- interface_names:
+  - x
+  - y
+  - z
+  values:
+  - 9.760043522046064e-06
+  - -8.694093508727278e-07
+  - 4.411512380887404e-07
+- interface_names:
+  - position
+  - effort
+  - velocity
+  values:
+  - 1.5710336852091378
+  - 0.2554078266547239
+  - -1.9607417661869027e-06
+- interface_names:
+  - position
+  - effort
+  - velocity
+  values:
+  - -0.0011149222195773602
+  - 0.005573785397603887
+  - 3.065180440978749e-06
+- interface_names:
+  - position
+  - effort
+  - velocity
+  values:
+  - 0.0015877022756884338
+  - -0.007934439928025243
+  - -1.6605274200830577e-05
+- interface_names:
+  - position
+  - velocity
+  - effort
+  values:
+  - 1.17081653644437
+  - 0.00017038157074894143
+  - 0.0
+- interface_names:
+  - position
+  - velocity
+  - effort
+  values:
+  - 0.05002228378385888
+  - -1.9505039921672695e-05
+  - -0.009868877908767762
+- interface_names:
+  - position
+  - effort
+  - velocity
+  values:
+  - 0.010188175406825317
+  - -0.05095346818975286
+  - 9.47064537068886e-06
+- interface_names:
+  - value
+  values:
+  - 0.005291121348197299
+- interface_names:
+  - position
+  - velocity
+  - effort
+  values:
+  - 1.0962996800653828
+  - 2.5379010250801654e-05
+  - 0.5370220542141896
+- interface_names:
+  - x
+  - y
+  - z
+  values:
+  - 0.2913069483621153
+  - -1.970535184791878
+  - -2.449029806683557
+- interface_names:
+  - position
+  - velocity
+  - effort
+  values:
+  - -0.03501415343138205
+  - 6.326866576605365e-07
+  - 0.08576504043701294
+- interface_names:
+  - position
+  - effort
+  - velocity
+  values:
+  - 0.6132711443166698
+  - 0.5300148412462204
+  - 2.712757443663579e-05
+- interface_names:
+  - position
+  - velocity
+  - effort
+  values:
+  - -0.659490468789885
+  - -1.623872516688934e-05
+  - -0.042123043013535255
+- interface_names:
+  - position
+  - velocity
+  - effort
+  values:
+  - 1.5048969013943845
+  - -3.3591080226068117e-06
+  - -12.544469282277985
+- interface_names:
+  - position
+  - velocity
+  - effort
+  values:
+  - -0.8939269357873589
+  - -1.8233115292967641e-06
+  - 26.799092551723557
+- interface_names:
+  - position
+  - velocity
+  - effort
+  values:
+  - -2.4155733498290908
+  - -3.7660459743698783e-06
+  - -14.89452975763106
+- interface_names:
+  - position
+  - velocity
+  - effort
+  values:
+  - 0.7911854965991232
+  - 1.566483599543893e-05
+  - 0.3560731038701707
+- interface_names:
+  - position
+  - velocity
+  - effort
+  values:
+  - 0.5020724200164867
+  - -1.0113999353819808e-05
+  - 0.37300517264575883
+- interface_names:
+  - position
+  - velocity
+  - effort
+  values:
+  - 1.031643568421863
+  - 0.0001270912473193373
+  - 0.6724952702028631
+- interface_names:
+  - position
+  - velocity
+  - effort
+  values:
+  - 0.9009341058770949
+  - 4.702543939353994e-05
+  - 0.609703397885153
+---

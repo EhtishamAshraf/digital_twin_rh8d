@@ -1,0 +1,287 @@
+src/ur5e_moveit_config/config/ur5e.ros2_control.xacro:14:            <!-- Add a parameter called "mujoco_actuator" to each joint, 
+src/ur5e_moveit_config/config/ur5e.ros2_control.xacro:15:            which will be used by the "mujoco_ros2_control" plugin to identify the corresponding "MuJoCo actuator" for each joint -->
+src/ur5e_moveit_config/config/ur5e.ros2_control.xacro:18:                <param name="mujoco_actuator">shoulder_pan</param>
+src/ur5e_moveit_config/config/ur5e.ros2_control.xacro:26:                <param name="mujoco_actuator">shoulder_lift</param>
+src/ur5e_moveit_config/config/ur5e.ros2_control.xacro:34:                <param name="mujoco_actuator">elbow</param>
+src/ur5e_moveit_config/config/ur5e.ros2_control.xacro:42:                <param name="mujoco_actuator">wrist_1</param>
+src/ur5e_moveit_config/config/ur5e.ros2_control.xacro:50:                <param name="mujoco_actuator">wrist_2</param>
+src/ur5e_moveit_config/config/ur5e.ros2_control.xacro:58:                <param name="mujoco_actuator">wrist_3</param>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:217:    <actuator name="fl_caster_rotation_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:261:    <actuator name="fl_caster_l_wheel_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:305:    <actuator name="fl_caster_r_wheel_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:344:    <actuator name="fr_caster_rotation_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:388:    <actuator name="fr_caster_l_wheel_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:432:    <actuator name="fr_caster_r_wheel_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:471:    <actuator name="bl_caster_rotation_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:515:    <actuator name="bl_caster_l_wheel_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:559:    <actuator name="bl_caster_r_wheel_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:598:    <actuator name="br_caster_rotation_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:642:    <actuator name="br_caster_l_wheel_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:686:    <actuator name="br_caster_r_wheel_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:837:    <actuator name="torso_lift_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:899:    <actuator name="head_pan_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:936:    <actuator name="head_tilt_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:1479:    <actuator name="laser_tilt_mount_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:1593:    <actuator name="r_upper_arm_roll_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:1616:    <actuator name="r_shoulder_pan_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:1623:    <actuator name="r_shoulder_lift_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:1657:  <!-- No transmission, since this a fixed joint w/o actuator -->
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:1701:    <actuator name="r_forearm_roll_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:1752:    <actuator name="r_elbow_flex_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:2402:    <actuator name="r_gripper_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:2403:    <gap_joint L0="0.0375528" a="0.0683698" b="0.043384900000000004" gear_ratio="40.095" h="0.0" mechanical_reduction="1.0" name="r_gripper_joint" phi0="0.5185181221457433" r="0.0915" screw_reduction="0.004" t0="-0.0001914" theta0="0.0628824676201037"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:2526:    <actuator name="l_upper_arm_roll_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:2549:    <actuator name="l_shoulder_pan_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:2556:    <actuator name="l_shoulder_lift_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:2590:  <!-- No transmission, since this a fixed joint w/o actuator -->
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:2634:    <actuator name="l_forearm_roll_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:2685:    <actuator name="l_elbow_flex_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:3335:    <actuator name="l_gripper_motor"/>
+src/trac_ik/trac_ik_examples/launch/pr2.urdf:3336:    <gap_joint L0="0.0375528" a="0.0683698" b="0.043384900000000004" gear_ratio="40.095" h="0.0" mechanical_reduction="1.0" name="l_gripper_joint" phi0="0.5185181221457433" r="0.0915" screw_reduction="0.004" t0="-0.0001914" theta0="0.0628824676201037"/>
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:15:- Gradual, rate-limited actuator control with per-joint speeds.
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:425:            f"ring={ring_contact}, small={small_contact}, palm_range={palm_range:.4f} | "
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:12:      Mapping ros2_control joints to MuJoCo actuators
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:14:      The RH8D hand is tendon-driven in MuJoCo, so ROS 2 control joints
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:16:      must be sent to MuJoCo position/tendon actuators.
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:18:      The custom "mujoco_actuator" parameter maps each ros2_control joint name
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:19:      to the actual MuJoCo actuator name.
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:25:        MuJoCo actuator:
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:26:          pos_index_tendon
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:35:      correct MuJoCo actuator through mj_data->ctrl[].
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:38:      The mujoco_actuator value must exactly match the actuator name in MJCF.
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:46:        <param name="mujoco_actuator">pos_forearm</param>
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:53:        <param name="mujoco_actuator">pos_palm_axis</param>
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:60:        <param name="mujoco_actuator">pos_palm_assembly</param>
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:67:        <param name="mujoco_actuator">pos_thumb_axis</param>
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:74:        <param name="mujoco_actuator">pos_index_tendon</param>
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:81:        <param name="mujoco_actuator">pos_middle_tendon</param>
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:88:        <param name="mujoco_actuator">pos_ring_small_tendon</param>
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:95:        <param name="mujoco_actuator">pos_thumb_tendon</param>
+src/ur5e_mujoco_description/src/set_pose.py:23:# Function for getting the index of a named actuator in the MuJoCo model:
+src/ur5e_mujoco_description/src/set_pose.py:24:def actuator_id(m, name):
+src/ur5e_mujoco_description/src/set_pose.py:36:# Function for setting the target of a specific actuator:
+src/ur5e_mujoco_description/src/set_pose.py:37:def set_actuator_ctrl(m, d, actuator_name, value):
+src/ur5e_mujoco_description/src/set_pose.py:38:    aid = actuator_id(m, actuator_name)
+src/ur5e_mujoco_description/src/set_pose.py:80:    # Set actuator targets to the same pose for UR5e and RH8D
+src/ur5e_mujoco_description/src/set_pose.py:81:    # This is important because if ctrl targets are not updated, the robot can move back to the previous default actuator target.
+src/ur5e_mujoco_description/src/set_pose.py:82:    set_actuator_ctrl(m, d, "shoulder_pan", arm_pose["shoulder_pan_joint"])
+src/ur5e_mujoco_description/src/set_pose.py:83:    set_actuator_ctrl(m, d, "shoulder_lift", arm_pose["shoulder_lift_joint"])
+src/ur5e_mujoco_description/src/set_pose.py:84:    set_actuator_ctrl(m, d, "elbow", arm_pose["elbow_joint"])
+src/ur5e_mujoco_description/src/set_pose.py:85:    set_actuator_ctrl(m, d, "wrist_1", arm_pose["wrist_1_joint"])
+src/ur5e_mujoco_description/src/set_pose.py:86:    set_actuator_ctrl(m, d, "wrist_2", arm_pose["wrist_2_joint"])
+src/ur5e_mujoco_description/src/set_pose.py:87:    set_actuator_ctrl(m, d, "wrist_3", arm_pose["wrist_3_joint"])
+src/ur5e_mujoco_description/src/set_pose.py:88:    set_actuator_ctrl(m, d, "pos_forearm", hand_pose["forearm:1--base:1"])
+src/ur5e_mujoco_description/src/set_pose.py:89:    set_actuator_ctrl(m, d, "pos_palm_axis", hand_pose["palm_axis:1--forearm:1"])
+src/ur5e_mujoco_description/src/set_pose.py:90:    set_actuator_ctrl(m, d, "pos_palm_assembly", hand_pose["palm_assembly:1--palm_axis:1"])
+src/ur5e_mujoco_description/src/set_pose.py:91:    set_actuator_ctrl(m, d, "pos_thumb_axis", hand_pose["Thumb_axis--palm_assembly:1"])
+src/ur5e_mujoco_description/src/set_pose.py:92:    set_actuator_ctrl(m, d, "pos_thumb_tendon", hand_pose["Thumb_Methacarpal--Thumb_axis"])
+src/ur5e_mujoco_description/src/set_pose.py:93:    set_actuator_ctrl(m, d, "pos_index_tendon", hand_pose["Index_Proximal--palm_assembly:1"])
+src/ur5e_mujoco_description/src/set_pose.py:94:    set_actuator_ctrl(m, d, "pos_middle_tendon", hand_pose["Middle_Proximal--palm_assembly:1"])
+src/ur5e_mujoco_description/src/set_pose.py:95:    set_actuator_ctrl(m, d, "pos_ring_small_tendon", hand_pose["Ring_Proximal--palm_assembly:1"])
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:40:      <joint axis="0 1 0" range="-6.28319 6.28319" armature="0.1"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:41:      <general gaintype="fixed" biastype="affine" ctrlrange="-6.2831 6.2831" gainprm="2000" biasprm="0 -2000 -400"
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:42:        forcerange="-150 150"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:46:          <joint range="-3.1415 3.1415"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:47:          <general ctrlrange="-3.1415 3.1415"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:52:        <general gainprm="500" biasprm="0 -500 -100" forcerange="-28 28"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:214:                        <joint name="forearm:1--base:1" axis="0 -1 0" range="-1.5708 1.5708" damping="0.08" frictionloss="0.005"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:223:                          <joint name="palm_axis:1--forearm:1" axis="0 0 1" range="-1.5708 1.5708" damping="0.08" frictionloss="0.005"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:234:                                  range="-0.785398 0.785398"
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:262:                              <joint name="Thumb_axis--palm_assembly:1" axis="0 -0.866025 0.5" range="-0.001 1.5708" damping="0.30" frictionloss="0.005"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:272:                                <joint name="Thumb_Methacarpal--Thumb_axis" axis="-1 0 0" range="0 1.5708" damping="0.30" stiffness="0.65"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:284:                                  <joint name="Thumb_Proximal--Thumb_Methacarpal" axis="-1 0 0" range="0 1.5708" damping="0.24" stiffness="0.55"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:296:                                    <joint name="Thumb_Distal--Thumb_Proximal" axis="-1 0 0" range="0 1.5708" damping="0.18" stiffness="0.45"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:319:                              <joint name="Index_Proximal--palm_assembly:1" axis="-1 0 0" range="0 1.5708" damping="0.30" stiffness="0.65"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:331:                                <joint name="Index_Middle--Index_Proximal" axis="-1 0 0" range="0 1.5708" damping="0.24" stiffness="0.55"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:343:                                  <joint name="Index_Distal--Index_Middle" axis="-1 0 0" range="0 1.5708" damping="0.18" stiffness="0.45"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:365:                              <joint name="Middle_Proximal--palm_assembly:1" axis="-1 0 0" range="0 1.5708" damping="0.30" stiffness="0.65"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:377:                                <joint name="Middle_Middle--Middle_Proximal" axis="-1 0 0" range="0 1.5708" damping="0.24" stiffness="0.55"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:389:                                  <joint name="Middle_Distal--Middle_Middle" axis="-1 0 0" range="0 1.5708" damping="0.18" stiffness="0.45"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:411:                              <joint name="Ring_Proximal--palm_assembly:1" axis="-1 0 0" range="0 1.5708" damping="0.30" stiffness="0.65"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:423:                                <joint name="Ring_Middle--Ring_Proximal" axis="-1 0 0" range="0 1.5708" damping="0.24" stiffness="0.35"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:435:                                  <joint name="Ring_Distal--Ring_Middle" axis="-1 0 0" range="0 1.5708" damping="0.18" stiffness="0.35"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:457:                              <joint name="Small_Proximal--palm_assembly:1" axis="-1 0 0" range="0 1.5708" damping="0.30" stiffness="0.3"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:469:                                <joint name="Small_Middle--Small_Proximal" axis="-1 0 0" range="0 1.5708" damping="0.24" stiffness="0.1"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:481:                                  <joint name="Small_Distal--Small_Middle" axis="-1 0 0" range="0 1.5708" damping="0.18" stiffness="0.15"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:512:  <!-- RH8D: Spatial tendons -->
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:513:  <tendon>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:554:  </tendon>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:556:  <!-- RH8D: ring and small finger are driven by the same actuator -->
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:558:    <tendon tendon1="sml_flex_spatial" tendon2="ring_flex_spatial"
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:566:  <actuator>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:567:    <!-- UR5e: actuators -->
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:575:    <!-- RH8D: wrist/palm actuators -->
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:577:              kp="5" kv="1" forcelimited="true" forcerange="-5 5"
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:578:              ctrllimited="true" ctrlrange="-1.5708 1.5708"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:580:              kp="5" kv="1" forcelimited="true" forcerange="-5 5"
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:581:              ctrllimited="true" ctrlrange="-1.5708 1.5708"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:583:              kp="5" kv="1" forcelimited="true" forcerange="-5 5"
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:584:              ctrllimited="true" ctrlrange="-0.785398 0.785398"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:586:              kp="5" kv="1" forcelimited="true" forcerange="-5 5"
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:587:              ctrllimited="true" ctrlrange="0.0 1.5708"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:589:    <!-- RH8D: Tendon driven finger's actuators -->
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:590:    <position name="pos_index_tendon" tendon="idx_flex_spatial"
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:591:              kp="80" kv="20" forcelimited="true" forcerange="0 180"
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:592:              ctrllimited="true" ctrlrange="0.0 1.5708"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:593:    <position name="pos_middle_tendon" tendon="mid_flex_spatial"
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:594:              kp="80" kv="20" forcelimited="true" forcerange="0 180"
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:595:              ctrllimited="true" ctrlrange="0.0 1.5708"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:596:    <position name="pos_ring_small_tendon" tendon="ring_flex_spatial"
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:597:              kp="85" kv="22" forcelimited="true" forcerange="0 180"
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:598:              ctrllimited="true" ctrlrange="0.0 1.5708"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:599:    <position name="pos_thumb_tendon" tendon="th_flex_spatial"
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:600:              kp="60" kv="18" forcelimited="true" forcerange="0 180"
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:601:              ctrllimited="true" ctrlrange="0.0 1.5708 "/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:602:  </actuator>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:608:    <tendonpos name="len_index"  tendon="idx_flex_spatial"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:609:    <tendonpos name="len_middle" tendon="mid_flex_spatial"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:610:    <tendonpos name="len_ring"   tendon="ring_flex_spatial"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:611:    <tendonpos name="len_small"  tendon="sml_flex_spatial"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:612:    <tendonpos name="len_thumb"  tendon="th_flex_spatial"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:615:    <actuatorfrc name="frc_index"  actuator="pos_index_tendon"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:616:    <actuatorfrc name="frc_middle" actuator="pos_middle_tendon"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:617:    <actuatorfrc name="frc_ring"   actuator="pos_ring_small_tendon"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:618:    <actuatorfrc name="frc_thumb"  actuator="pos_thumb_tendon"/>
+src/ur5e_mujoco_description/mjcf/ur5e.xml:9:      <joint axis="0 1 0" range="-6.28319 6.28319" armature="0.1"/>
+src/ur5e_mujoco_description/mjcf/ur5e.xml:10:      <general gaintype="fixed" biastype="affine" ctrlrange="-6.2831 6.2831" gainprm="2000" biasprm="0 -2000 -400"
+src/ur5e_mujoco_description/mjcf/ur5e.xml:11:        forcerange="-150 150"/>
+src/ur5e_mujoco_description/mjcf/ur5e.xml:14:          <joint range="-3.1415 3.1415"/>
+src/ur5e_mujoco_description/mjcf/ur5e.xml:15:          <general ctrlrange="-3.1415 3.1415"/>
+src/ur5e_mujoco_description/mjcf/ur5e.xml:19:        <general gainprm="500" biasprm="0 -500 -100" forcerange="-28 28"/>
+src/ur5e_mujoco_description/mjcf/ur5e.xml:124:  <actuator>
+src/ur5e_mujoco_description/mjcf/ur5e.xml:131:  </actuator>
+src/ur5e_mujoco_description/urdf/inc/ur_transmissions.xacro:16:      <actuator name="${prefix}shoulder_pan_motor">
+src/ur5e_mujoco_description/urdf/inc/ur_transmissions.xacro:18:      </actuator>
+src/ur5e_mujoco_description/urdf/inc/ur_transmissions.xacro:26:      <actuator name="${prefix}shoulder_lift_motor">
+src/ur5e_mujoco_description/urdf/inc/ur_transmissions.xacro:28:      </actuator>
+src/ur5e_mujoco_description/urdf/inc/ur_transmissions.xacro:36:      <actuator name="${prefix}elbow_motor">
+src/ur5e_mujoco_description/urdf/inc/ur_transmissions.xacro:38:      </actuator>
+src/ur5e_mujoco_description/urdf/inc/ur_transmissions.xacro:46:      <actuator name="${prefix}wrist_1_motor">
+src/ur5e_mujoco_description/urdf/inc/ur_transmissions.xacro:48:      </actuator>
+src/ur5e_mujoco_description/urdf/inc/ur_transmissions.xacro:56:      <actuator name="${prefix}wrist_2_motor">
+src/ur5e_mujoco_description/urdf/inc/ur_transmissions.xacro:58:      </actuator>
+src/ur5e_mujoco_description/urdf/inc/ur_transmissions.xacro:66:      <actuator name="${prefix}wrist_3_motor">
+src/ur5e_mujoco_description/urdf/inc/ur_transmissions.xacro:68:      </actuator>
+src/mujoco_ros2_control/mujoco_ros2_control_demos/mujoco_models/test_cart.xml:13:                <joint name="slider_to_cart" type="slide" axis="1 0 0" pos="0 0 0" range="-15 15"/>
+src/mujoco_ros2_control/mujoco_ros2_control_demos/mujoco_models/test_camera.xml:15:            <joint name="camera_joint" type="hinge" axis="0 1 0" range="-30 30" damping="0.1"/>
+src/mujoco_ros2_control/mujoco_ros2_control_demos/mujoco_models/test_camera.xml:26:    <actuator>
+src/mujoco_ros2_control/mujoco_ros2_control_demos/mujoco_models/test_camera.xml:27:        <motor joint="camera_joint" ctrlrange="-1 1" gear="100"/>
+src/mujoco_ros2_control/mujoco_ros2_control_demos/mujoco_models/test_camera.xml:28:    </actuator>
+src/mujoco_ros2_control/mujoco_ros2_control_demos/mujoco_models/test_vertical_cart.xml:13:                <joint name="slider_to_cart" type="slide" axis="0 0 1" pos="0 0 0" range="-2.5 2.5" />
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:40:  // Command-space joint / actuator states
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:43:    if (joint_state.is_mujoco_actuator)
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:49:        joint_state.effort = mj_data_->qfrc_actuator[joint_state.mj_vel_adr];
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:53:      // For actuator-backed interfaces:
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:55:      // effort   -> actuator force
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:56:      joint_state.position = mj_data_->ctrl[joint_state.mj_actuator_id];
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:58:      joint_state.effort = mj_data_->actuator_force[joint_state.mj_actuator_id];
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:68:  //########## Added support for "URDF joint state export for tendon-driven MuJoCo models" during this project ##########
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:73:    joint_state.effort = mj_data_->qfrc_actuator[joint_state.mj_vel_adr];
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:75:  //########## Added support for "URDF joint state export for tendon-driven MuJoCo models" during this project ##########
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:152:    if (joint_state.is_mujoco_actuator)
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:156:        mj_data_->ctrl[joint_state.mj_actuator_id] = clamp(
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:163:        mj_data_->ctrl[joint_state.mj_actuator_id] = clamp(
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:170:        mj_data_->ctrl[joint_state.mj_actuator_id] = clamp(
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:257:// Added support for "explicit ros2_control-to-MuJoCo actuator name mapping".
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:261://   the actual MuJoCo actuator name.
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:265://     MuJoCo actuator name:    pos_forearm
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:267://   If the ros2_control joint contains a parameter called "mujoco_actuator",
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:268://   this plugin uses that parameter value as the MuJoCo actuator name and
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:269://   directly registers the interface as actuator-backed.
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:272://   the correct MuJoCo actuator internally.
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:286:    bool prefer_actuator = false;
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:288:    auto actuator_param_it = joint.parameters.find("mujoco_actuator");
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:289:    if (actuator_param_it != joint.parameters.end())
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:291:      mujoco_name = actuator_param_it->second;
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:292:      prefer_actuator = true;
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:296:    int mujoco_actuator_id = -1;
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:298:    if (prefer_actuator)
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:300:      mujoco_actuator_id = mj_name2id(mj_model_, mjOBJ_ACTUATOR, mujoco_name.c_str());
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:301:      if (mujoco_actuator_id == -1)
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:305:          "Failed to find mapped MuJoCo actuator, ros2_control joint name: "
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:306:            << joint.name << ", mapped actuator name: " << mujoco_name);
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:318:        mujoco_actuator_id = mj_name2id(mj_model_, mjOBJ_ACTUATOR, mujoco_name.c_str());
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:319:        if (mujoco_actuator_id == -1)
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:323:            "Failed to find joint or actuator in mujoco model, ros2_control joint name: "
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:347:    if (mujoco_actuator_id != -1)
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:349:      joint_state.is_mujoco_actuator = true;
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:350:      joint_state.mj_actuator_id = mujoco_actuator_id;
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:351:      joint_state.mj_actuator_trn_type = mj_model_->actuator_trntype[mujoco_actuator_id];
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:352:      joint_state.mj_actuator_trn_id = mj_model_->actuator_trnid[2 * mujoco_actuator_id];
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:487:// Added support for "URDF joint state export for tendon/actuator-controlled MuJoCo models".
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:490://   In this project, some RH8D commands are applied to MuJoCo actuators/tendons
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:494://     - Controller command: pos_index_tendon
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:500://   Therefore, even if the controller command is sent to a tendon actuator,
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:589://########## Added support for "URDF joint state export for tendon-driven MuJoCo models" during this project ##########
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:744:    // Added support for "RH8D fingertip force, tendon length, tendon force, and palm range sensors".
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:780:    //      These are scalar tendon position/length sensors.
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:784:    //   4. Tendon actuator force sensors:
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:790:    //      These are scalar actuator force sensors for the tendon actuators.
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:880:    if (joint_state.is_mujoco_actuator)
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:882:      mj_data_->ctrl[joint_state.mj_actuator_id] = joint_state.position;
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_ros2_control_node.cpp:49://   It does NOT command a MuJoCo actuator and should not be used as a normal
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_ros2_control_node.cpp:52://   For actuator/tendon-controlled RH8D joints, commands should be written to
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_ros2_control_node.cpp:53://   mj_data->ctrl[actuator_id] through the ros2_control write() function.
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_ros2_control.cpp:92:  // setup actuators and mechanism control node.
+src/mujoco_ros2_control/mujoco_ros2_control/include/mujoco_ros2_control/mujoco_system.hpp:87:    bool is_mujoco_actuator{false};
+src/mujoco_ros2_control/mujoco_ros2_control/include/mujoco_ros2_control/mujoco_system.hpp:89:    int mj_actuator_id{-1};
+src/mujoco_ros2_control/mujoco_ros2_control/include/mujoco_ros2_control/mujoco_system.hpp:90:    int mj_actuator_trn_type{-1};
+src/mujoco_ros2_control/mujoco_ros2_control/include/mujoco_ros2_control/mujoco_system.hpp:91:    int mj_actuator_trn_id{-1};
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:82:      <joint name="forearm:1--base:1" axis="0 -1 0" range="-1.5708 1.5708" damping="0.08" frictionloss="0.005"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:92:        <joint name="palm_axis:1--forearm:1" axis="0 0 1" range="-1.5708 1.5708" damping="0.08" frictionloss="0.005"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:104:                 range="-0.785398 0.785398"
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:133:            <joint name="Thumb_axis--palm_assembly:1" axis="0 -0.866025 0.5" range="-0.001 1.5708" damping="0.10" frictionloss="0.005"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:143:              <joint name="Thumb_Methacarpal--Thumb_axis" axis="-1 0 0" range="0 1.5708" damping="0.10" stiffness="0.65"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:155:                <joint name="Thumb_Proximal--Thumb_Methacarpal" axis="-1 0 0" range="0 1.5708" damping="0.08" stiffness="0.55"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:167:                  <joint name="Thumb_Distal--Thumb_Proximal" axis="-1 0 0" range="0 1.5708" damping="0.06" stiffness="0.45"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:190:            <joint name="Index_Proximal--palm_assembly:1" axis="-1 0 0" range="0 1.5708" damping="0.10" stiffness="0.65"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:202:              <joint name="Index_Middle--Index_Proximal" axis="-1 0 0" range="0 1.5708" damping="0.08" stiffness="0.55"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:214:                <joint name="Index_Distal--Index_Middle" axis="-1 0 0" range="0 1.5708" damping="0.06" stiffness="0.45"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:236:            <joint name="Middle_Proximal--palm_assembly:1" axis="-1 0 0" range="0 1.5708" damping="0.10" stiffness="0.65"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:248:              <joint name="Middle_Middle--Middle_Proximal" axis="-1 0 0" range="0 1.5708" damping="0.08" stiffness="0.55"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:260:                <joint name="Middle_Distal--Middle_Middle" axis="-1 0 0" range="0 1.5708" damping="0.06" stiffness="0.45"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:282:            <joint name="Ring_Proximal--palm_assembly:1" axis="-1 0 0" range="0 1.5708" damping="0.10" stiffness="0.65"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:294:              <joint name="Ring_Middle--Ring_Proximal" axis="-1 0 0" range="0 1.5708" damping="0.08" stiffness="0.35"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:306:                <joint name="Ring_Distal--Ring_Middle" axis="-1 0 0" range="0 1.5708" damping="0.06" stiffness="0.35"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:328:            <joint name="Small_Proximal--palm_assembly:1" axis="-1 0 0" range="0 1.5708" damping="0.10" stiffness="0.3"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:340:              <joint name="Small_Middle--Small_Proximal" axis="-1 0 0" range="0 1.5708" damping="0.08" stiffness="0.1"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:352:                <joint name="Small_Distal--Small_Middle" axis="-1 0 0" range="0 1.5708" damping="0.06" stiffness="0.15"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:373:  <!-- RH8D: Spatial tendons -->
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:374:  <tendon>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:415:  </tendon>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:417:  <!-- RH8D: ring and small finger are driven by the same actuator -->
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:419:    <tendon tendon1="sml_flex_spatial" tendon2="ring_flex_spatial"
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:426:  <actuator>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:427:    <!-- RH8D: wrist/palm actuators -->
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:429:              kp="5" kv="1" forcelimited="true" forcerange="-5 5"
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:430:              ctrllimited="true" ctrlrange="-1.5708 1.5708"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:433:              kp="5" kv="1" forcelimited="true" forcerange="-5 5"
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:434:              ctrllimited="true" ctrlrange="-1.5708 1.5708"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:437:              kp="5" kv="1" forcelimited="true" forcerange="-5 5"
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:438:              ctrllimited="true" ctrlrange="-0.785398 0.785398"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:441:              kp="5" kv="1" forcelimited="true" forcerange="-5 5"
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:442:              ctrllimited="true" ctrlrange="0.0 1.5708"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:444:    <!-- RH8D: Tendon driven finger actuators -->
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:445:    <position name="pos_index_tendon" tendon="idx_flex_spatial"
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:446:              kp="80" dampratio="0.5" forcelimited="true" forcerange="0 180"
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:447:              ctrllimited="true" ctrlrange="0.0 1.5708"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:449:    <position name="pos_middle_tendon" tendon="mid_flex_spatial"
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:450:              kp="80" dampratio="0.5" forcelimited="true" forcerange="0 180"
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:451:              ctrllimited="true" ctrlrange="0.0 1.5708"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:453:    <position name="pos_ring_small_tendon" tendon="ring_flex_spatial"
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:454:              kp="80" dampratio="0.5" forcelimited="true" forcerange="0 180"
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:455:              ctrllimited="true" ctrlrange="0.0 1.5708"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:457:    <position name="pos_thumb_tendon" tendon="th_flex_spatial"
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:458:              kp="60" dampratio="0.5" forcelimited="true" forcerange="0 180"
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:459:              ctrllimited="true" ctrlrange="0.0 1.5708"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:460:  </actuator>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:465:    <tendonpos name="len_index"  tendon="idx_flex_spatial"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:466:    <tendonpos name="len_middle" tendon="mid_flex_spatial"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:467:    <tendonpos name="len_ring"   tendon="ring_flex_spatial"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:468:    <tendonpos name="len_small"  tendon="sml_flex_spatial"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:469:    <tendonpos name="len_thumb"  tendon="th_flex_spatial"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:471:    <!-- Tendon actuator forces -->
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:472:    <actuatorfrc name="frc_index"  actuator="pos_index_tendon"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:473:    <actuatorfrc name="frc_middle" actuator="pos_middle_tendon"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:474:    <actuatorfrc name="frc_ring"   actuator="pos_ring_small_tendon"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:475:    <actuatorfrc name="frc_thumb"  actuator="pos_thumb_tendon"/>

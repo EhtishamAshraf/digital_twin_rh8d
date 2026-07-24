@@ -1,0 +1,50 @@
+src/ur5e_moveit_config/package.xml:31:  <!-- <exec_depend>joint_trajectory_controller</exec_depend> -->
+src/ur5e_moveit_config/launch/ur5e_rh8d_mujoco_bringup.launch.py:119:    hand_trajectory_controller_spawner = Node(
+src/ur5e_moveit_config/launch/ur5e_rh8d_mujoco_bringup.launch.py:123:            "hand_trajectory_controller",
+src/ur5e_moveit_config/launch/ur5e_rh8d_mujoco_bringup.launch.py:217:                    on_exit=[hand_trajectory_controller_spawner],
+src/ur5e_moveit_config/config/moveit_controllers.yaml:10:    type: FollowJointTrajectory
+src/ur5e_moveit_config/config/moveit_controllers.yaml:18:    action_ns: follow_joint_trajectory
+src/ur5e_moveit_config/config/ros2_controllers.yaml:8:      type: joint_trajectory_controller/JointTrajectoryController
+src/ur5e_moveit_config/config/ur5e_rh8d_ros2_controllers.yaml:9:      type: joint_trajectory_controller/JointTrajectoryController
+src/ur5e_moveit_config/config/ur5e_rh8d_ros2_controllers.yaml:11:    hand_trajectory_controller:
+src/ur5e_moveit_config/config/ur5e_rh8d_ros2_controllers.yaml:12:      type: joint_trajectory_controller/JointTrajectoryController
+src/ur5e_moveit_config/config/ur5e_rh8d_ros2_controllers.yaml:29:hand_trajectory_controller:
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:41:from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:49:        super().__init__('rh8d_hand_service_controller')
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:69:            JointTrajectory,
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:70:            '/hand_trajectory_controller/joint_trajectory',
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:209:        msg = JointTrajectory()
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:212:        pt = JointTrajectoryPoint()
+src/mujoco_ros2_control/mujoco_ros2_control_demos/package.xml:22: <depend>joint_trajectory_controller</depend>
+src/mujoco_ros2_control/mujoco_ros2_control_demos/examples/example_position.cpp:22:#include "control_msgs/action/follow_joint_trajectory.hpp"
+src/mujoco_ros2_control/mujoco_ros2_control_demos/examples/example_position.cpp:27:int common_action_result_code = control_msgs::action::FollowJointTrajectory_Result::SUCCESSFUL;
+src/mujoco_ros2_control/mujoco_ros2_control_demos/examples/example_position.cpp:31:  <control_msgs::action::FollowJointTrajectory>::SharedPtr goal_handle)
+src/mujoco_ros2_control/mujoco_ros2_control_demos/examples/example_position.cpp:47:  <control_msgs::action::FollowJointTrajectory>::WrappedResult & result)
+src/mujoco_ros2_control/mujoco_ros2_control_demos/examples/example_position.cpp:69:  rclcpp_action::ClientGoalHandle<control_msgs::action::FollowJointTrajectory>::SharedPtr,
+src/mujoco_ros2_control/mujoco_ros2_control_demos/examples/example_position.cpp:70:  const std::shared_ptr<const control_msgs::action::FollowJointTrajectory::Feedback> feedback)
+src/mujoco_ros2_control/mujoco_ros2_control_demos/examples/example_position.cpp:92:  rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SharedPtr action_client;
+src/mujoco_ros2_control/mujoco_ros2_control_demos/examples/example_position.cpp:93:  action_client = rclcpp_action::create_client<control_msgs::action::FollowJointTrajectory>(
+src/mujoco_ros2_control/mujoco_ros2_control_demos/examples/example_position.cpp:98:    "/joint_trajectory_controller/follow_joint_trajectory");
+src/mujoco_ros2_control/mujoco_ros2_control_demos/examples/example_position.cpp:109:  std::vector<trajectory_msgs::msg::JointTrajectoryPoint> points;
+src/mujoco_ros2_control/mujoco_ros2_control_demos/examples/example_position.cpp:110:  trajectory_msgs::msg::JointTrajectoryPoint point;
+src/mujoco_ros2_control/mujoco_ros2_control_demos/examples/example_position.cpp:116:  trajectory_msgs::msg::JointTrajectoryPoint point2;
+src/mujoco_ros2_control/mujoco_ros2_control_demos/examples/example_position.cpp:121:  trajectory_msgs::msg::JointTrajectoryPoint point3;
+src/mujoco_ros2_control/mujoco_ros2_control_demos/examples/example_position.cpp:126:  trajectory_msgs::msg::JointTrajectoryPoint point4;
+src/mujoco_ros2_control/mujoco_ros2_control_demos/examples/example_position.cpp:136:  rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SendGoalOptions opt;
+src/mujoco_ros2_control/mujoco_ros2_control_demos/examples/example_position.cpp:141:  control_msgs::action::FollowJointTrajectory_Goal goal_msg;
+src/mujoco_ros2_control/mujoco_ros2_control_demos/examples/example_position.cpp:158:  rclcpp_action::ClientGoalHandle<control_msgs::action::FollowJointTrajectory>::SharedPtr
+src/mujoco_ros2_control/mujoco_ros2_control_demos/launch/vertical_cart_example_position_pid.launch.py:53:    load_joint_trajectory_controller = ExecuteProcess(
+src/mujoco_ros2_control/mujoco_ros2_control_demos/launch/vertical_cart_example_position_pid.launch.py:55:             'joint_trajectory_controller'],
+src/mujoco_ros2_control/mujoco_ros2_control_demos/launch/vertical_cart_example_position_pid.launch.py:69:                on_exit=[load_joint_trajectory_controller],
+src/mujoco_ros2_control/mujoco_ros2_control_demos/launch/vertical_cart_example_velocity.launch.py:52:    load_joint_trajectory_controller = ExecuteProcess(
+src/mujoco_ros2_control/mujoco_ros2_control_demos/launch/vertical_cart_example_velocity.launch.py:67:                on_exit=[load_joint_trajectory_controller],
+src/mujoco_ros2_control/mujoco_ros2_control_demos/launch/cart_example_effort.launch.py:59:    load_joint_trajectory_controller = ExecuteProcess(
+src/mujoco_ros2_control/mujoco_ros2_control_demos/launch/cart_example_effort.launch.py:80:                on_exit=[load_joint_trajectory_controller],
+src/mujoco_ros2_control/mujoco_ros2_control_demos/launch/cart_example_position.launch.py:53:    load_joint_trajectory_controller = ExecuteProcess(
+src/mujoco_ros2_control/mujoco_ros2_control_demos/launch/cart_example_position.launch.py:55:             'joint_trajectory_controller'],
+src/mujoco_ros2_control/mujoco_ros2_control_demos/launch/cart_example_position.launch.py:69:                on_exit=[load_joint_trajectory_controller],
+src/mujoco_ros2_control/mujoco_ros2_control_demos/launch/cart_example_velocity.launch.py:52:    load_joint_trajectory_controller = ExecuteProcess(
+src/mujoco_ros2_control/mujoco_ros2_control_demos/launch/cart_example_velocity.launch.py:67:                on_exit=[load_joint_trajectory_controller],
+src/mujoco_ros2_control/mujoco_ros2_control_demos/config/cartpole_controller_position.yaml:5:    joint_trajectory_controller:
+src/mujoco_ros2_control/mujoco_ros2_control_demos/config/cartpole_controller_position.yaml:6:      type: joint_trajectory_controller/JointTrajectoryController
+src/mujoco_ros2_control/mujoco_ros2_control_demos/config/cartpole_controller_position.yaml:11:joint_trajectory_controller:

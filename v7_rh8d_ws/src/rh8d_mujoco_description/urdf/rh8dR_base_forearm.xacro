@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  
+  <xacro:arg name="parent" default="world"/>
+  <xacro:arg name="mount_xyz" default="0 0 0"/>
+  <xacro:arg name="mount_rpy" default="0 0 1.57"/>
+
+  <!-- Fixed joint: parent -> base:1 --> 
+  <joint name="base:1--parent" type="fixed">
+    <parent link="$(arg parent)"/>
+    <child link="base:1"/>
+    <origin xyz="$(arg mount_xyz)" rpy="$(arg mount_rpy)"/>
+  </joint>
+
+  <!-- Base:1 link -->
+  <link name="base:1">
+    <inertial>
+      <origin xyz="-1.7894e-05 4.25261e-05 0.00323829" rpy="0 0 0"/>
+      <mass value="0.00707371"/>
+      <inertia ixx="6.95609e-07" ixy="1.65614e-10" ixz="-3.46603e-10" iyy="7.00727e-07" iyz="8.23724e-10" izz="1.34782e-06"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0.0045" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/base.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="base:1_color">
+        <color rgba="0.74902 0.74902 0.74902 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.0045" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/base.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Forearm:1 link -->
+  <link name="forearm:1">
+    <inertial>
+      <origin xyz="1.87963e-07 -0.0656522 -0.00271352" rpy="0 0 0"/>
+      <mass value="0.740385"/>
+      <inertia ixx="0.00130925" ixy="9.24573e-08" ixz="7.46281e-09" iyy="0.000680297" iyz="-5.0842e-06" izz="0.00146212"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/forearm.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="forearm:1_color">
+        <color rgba="0.74902 0.74902 0.74902 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/forearm.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Joint: base:1 -> forearm:1 -->
+  <joint name="forearm:1--base:1" type="revolute">
+    <origin xyz="0 0 0.001" rpy="-1.57079632679 0 3.14159265359"/>
+    <axis xyz="0.0 -1.0 0.0"/>
+    <parent link="base:1"/>
+    <child link="forearm:1"/>
+    <dynamics damping="0.05" friction="0.005"/>
+    <limit effort="2.5" lower="-1.57079632679" upper="1.57079632679" velocity="5.0"/>
+  </joint>
+
+</robot>

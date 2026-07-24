@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Small Proximal -->
+    <link name="Small_Proximal">
+    <inertial>
+      <origin xyz="-0.00506277998719 -0.000180310009626 -0.0109170589442" rpy="0 0 0"/>
+      <mass value="0.00525864"/>
+      <inertia ixx="5.33998e-07" ixy="2.78487e-10" ixz="-8.95438e-13" iyy="5.63087e-07" iyz="3.11448e-08" izz="1.84796e-07"/>
+    </inertial>
+    <visual>
+        <origin xyz="-0.00506255509062 0 -0.0129377737498" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/phalanx.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="Small_Proximal_color">
+        <color rgba="0.74902 0.74902 0.74902 1.0"/>
+        </material>
+    </visual>
+    <collision>
+        <origin xyz="-0.00506255509062 0 -0.0129377737498" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/phalanx.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+    </collision>
+    </link>
+
+    <!-- Joint: palm_assembly:1 -> Small_Proximal -->
+    <joint name="Small_Proximal--palm_assembly:1" type="revolute">
+        <origin xyz="0.0235505158035 -0.00577398807353 0.0699044596946" rpy="-3.11077106287 0.256444763551 0.355662128572"/>
+        <axis xyz="-1.0 0.0 0.0"/>
+        <parent link="palm_assembly:1"/>
+        <child link="Small_Proximal"/>
+            
+        <mimic joint="Ring_Proximal--palm_assembly:1"
+                    multiplier="1.0"
+                    offset="0.0"/>
+
+        <dynamics damping="0.002" friction="0.0"/>
+        <limit effort="0.5" lower="0" upper="1.57079632679" velocity="10.0"/>
+    </joint>
+
+    <!-- Small Middle -->
+    <link name="Small_Middle">
+    <inertial>
+      <origin xyz="-0.00506277998719 -0.000180310009626 -0.0109170589442" rpy="0 0 0"/>
+      <mass value="0.00525864"/>
+      <inertia ixx="5.33998e-07" ixy="2.78487e-10" ixz="-8.95438e-13" iyy="5.63087e-07" iyz="3.11448e-08" izz="1.84796e-07"/>
+    </inertial>
+    <visual>
+        <origin xyz="-0.00506255232545 0 -0.012937777764" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/phalanx.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="Small_Middle_color">
+        <color rgba="0.74902 0.74902 0.74902 1.0"/>
+        </material>
+    </visual>
+    <collision>
+        <origin xyz="-0.00506255232545 0 -0.012937777764" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/phalanx.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+    </collision>
+    </link>
+
+    <!-- Joint: Small_Proximal -> Small_Middle -->
+    <joint name="Small_Middle--Small_Proximal" type="revolute">
+        <origin xyz="6.24422847373e-05 0 -0.025875246546" rpy="0 0 0"/>
+        <axis xyz="-1.0 0.0 0.0"/>
+        <parent link="Small_Proximal"/>
+        <child link="Small_Middle"/>
+            
+        <mimic joint="Small_Proximal--palm_assembly:1"
+                    multiplier="0.9"
+                    offset="0.0"/>
+
+        <dynamics damping="0.002" friction="0.0"/>
+        <limit effort="0.5" lower="0" upper="1.57079632679" velocity="10.0"/>
+    </joint>
+
+    <!-- Small Distal -->
+    <link name="Small_Distal">
+    <inertial>
+      <origin xyz="-0.00452231685738 -0.00261999676819 -0.0121244747955" rpy="0 0 0"/>
+      <mass value="0.00650951"/>
+      <inertia ixx="5.02476e-07" ixy="-6.66361e-09" ixz="5.02846e-09" iyy="5.2803e-07" iyz="-5.85168e-08" izz="3.30404e-07"/>
+    </inertial>
+    <visual>
+        <origin xyz="-0.00506243538681 0 0" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/tip.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="Small_Distal_color">
+        <color rgba="0.74902 0.74902 0.74902 1.0"/>
+        </material>
+    </visual>
+    <collision>
+        <origin xyz="-0.00506243538681 0 0" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/tip.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+    </collision>
+    </link>
+
+    <!-- Joint: Small_Middle -> Small_Distal -->
+    <joint name="Small_Distal--Small_Middle" type="revolute">
+    <origin xyz="6.2445049899e-05 0 -0.0258752505602" rpy="0 0 0"/>
+    <axis xyz="-1.0 0.0 0.0"/>
+    <parent link="Small_Middle"/>
+    <child link="Small_Distal"/>
+        
+    <mimic joint="Small_Middle--Small_Proximal"
+                multiplier="0.9"
+                offset="0.0"/>
+
+    <dynamics damping="0.002" friction="0.0"/>
+    <limit effort="0.5" lower="0" upper="1.57079632679" velocity="10.0"/>
+    </joint>
+
+</robot>
+

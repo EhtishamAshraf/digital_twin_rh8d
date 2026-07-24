@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="ur5e">
+
+  <xacro:arg name="name" default="ur5e"/>
+  <xacro:arg name="ur_type" default="ur5e"/>
+
+  <xacro:arg name="tf_prefix" default=""/>
+  <xacro:arg name="joint_limit_params" default="$(find ur5e_mujoco_description)/config/$(arg ur_type)/joint_limits.yaml"/>
+  <xacro:arg name="kinematics_params" default="$(find ur5e_mujoco_description)/config/$(arg ur_type)/default_kinematics.yaml"/>
+  <xacro:arg name="physical_params" default="$(find ur5e_mujoco_description)/config/$(arg ur_type)/physical_parameters.yaml"/>
+  <xacro:arg name="visual_params" default="$(find ur5e_mujoco_description)/config/$(arg ur_type)/visual_parameters.yaml"/>
+  <xacro:arg name="safety_limits" default="false"/>
+  <xacro:arg name="safety_pos_margin" default="0.15"/>
+  <xacro:arg name="safety_k_position" default="20"/>
+  <xacro:arg name="force_abs_paths" default="false"/>
+
+  <xacro:include filename="$(find ur5e_mujoco_description)/urdf/ur_macro.xacro"/>
+
+  <!-- RH8D mounting args -->
+  <xacro:arg name="rh8d_mount_xyz" default="0 0 0"/>
+  <xacro:arg name="rh8d_mount_rpy" default="0 0 1.57"/>
+  <xacro:arg name="parent" default="$(arg tf_prefix)tool0"/>
+  <xacro:arg name="mount_xyz" default="$(arg rh8d_mount_xyz)"/>
+  <xacro:arg name="mount_rpy" default="$(arg rh8d_mount_rpy)"/>
+
+  <link name="world"/>
+  <link name="table">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://ur5e_mujoco_description/meshes/table/visual/table_visual.stl"
+              scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://ur5e_mujoco_description/meshes/table/collision/table_collision.stl"
+              scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="world_to_table" type="fixed">
+    <parent link="world"/>
+    <child link="table"/>
+    <origin xyz="0 0 0.73" rpy="0 0 0"/>
+  </joint>
+
+  <xacro:ur_robot
+    name="$(arg name)"
+    tf_prefix="$(arg tf_prefix)"
+    parent="table"
+    joint_limits_parameters_file="$(arg joint_limit_params)"
+    kinematics_parameters_file="$(arg kinematics_params)"
+    physical_parameters_file="$(arg physical_params)"
+    visual_parameters_file="$(arg visual_params)"
+    safety_limits="$(arg safety_limits)"
+    safety_pos_margin="$(arg safety_pos_margin)"
+    safety_k_position="$(arg safety_k_position)"
+    force_abs_paths="$(arg force_abs_paths)">
+    <origin xyz="0.191189 0.13475 0.555131" rpy="${3*pi/4} 0 ${pi/2}" /> 
+    <!-- <origin xyz="0.191189 0.5 -0.70" rpy="0 0 0" />  -->
+  </xacro:ur_robot>
+
+  <xacro:include filename="$(find rh8d_mujoco_description)/urdf/rh8dR_main.urdf.xacro"/>
+
+</robot>

@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: ur5e_mujoco_description
+    relative_path: urdf/ur.urdf.xacro
+  srdf:
+    relative_path: config/ur5e.srdf
+  package_settings:
+    author_name: Ehtisham
+    author_email: ehtishamashraf67@gmail.com
+    generated_timestamp: 1776115878

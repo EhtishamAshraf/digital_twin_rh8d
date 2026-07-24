@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Palm axis:1 -->
+    <link name="palm_axis:1">
+    <inertial>
+        <origin xyz="0 0.008585 0.0125" rpy="0 0 0"/>
+        <mass value="0.0509809"/>
+        <inertia ixx="9.79681e-06" ixy="0.0" ixz="0.0" iyy="1.37535e-05" iyz="0.0" izz="1.88432e-05"/>
+    </inertial>
+    <visual>
+        <origin xyz="0 0 0.0125" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/palm_axis.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="palm_axis:1_color">
+        <color rgba="0.74902 0.74902 0.74902 1.0"/>
+        </material>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0.0125" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/palm_axis.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+    </collision>
+    </link>
+
+    <!-- Joint: forearm:1 -> palm_axis:1 -->
+    <joint name="palm_axis:1--forearm:1" type="revolute">
+        <origin xyz="0 -0.165 -0.01275" rpy="0 0 0"/>
+        <axis xyz="0.0 0.0 1.0"/>
+        <parent link="forearm:1"/>
+        <child link="palm_axis:1"/>
+        <dynamics damping="0.05" friction="0.005"/>
+        <limit effort="2.5" lower="-1.57079632679" upper="1.57079632679" velocity="5.0"/>
+    </joint>
+
+    <!-- Palm assembly:1 -->
+    <link name="palm_assembly:1">
+    <inertial>
+      <origin xyz="-0.0428433081101 -0.00466110567748 0.0454719253018" rpy="0 0 0"/>
+      <mass value="0.0820994"/>
+      <inertia ixx="4.39253e-05" ixy="1.11426e-05" ixz="-1.28914e-05" iyy="9.20893e-05" iyz="1.14015e-05" izz="8.15763e-05"/>
+    </inertial>
+    <visual>
+        <origin xyz="-0.0586362307848 -0.00572412998384 0.0653211822683" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/palm_assembly.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="palm_assembly:1_color">
+        <color rgba="0.74902 0.74902 0.74902 1.0"/>
+        </material>
+    </visual>
+    <collision>
+        <origin xyz="-0.0586362307848 -0.00572412998384 0.0653211822683" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/palm_assembly.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+    </collision>
+    </link>
+
+    <!-- Joint: palm_axis:1 -> palm_assembly:1 -->
+    <joint name="palm_assembly:1--palm_axis:1" type="revolute">
+        <origin xyz="0.0265 0 0.0125" rpy="1.3794331964 0.155855069444 -0.117563149369"/>
+        <axis xyz="-0.981060237641 -0.173648197509 0.0858318916347"/>
+        <parent link="palm_axis:1"/>
+        <child link="palm_assembly:1"/>
+        <dynamics damping="0.05" friction="0.005"/>
+        <limit effort="2.5" lower="-0.785398163395" upper="0.785398163395" velocity="5.0"/>
+    </joint>
+
+</robot>

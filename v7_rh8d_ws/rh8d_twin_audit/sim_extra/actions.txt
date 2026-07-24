@@ -1,0 +1,4 @@
+/arm_trajectory_controller/follow_joint_trajectory
+/execute_trajectory
+/hand_trajectory_controller/follow_joint_trajectory
+/move_action

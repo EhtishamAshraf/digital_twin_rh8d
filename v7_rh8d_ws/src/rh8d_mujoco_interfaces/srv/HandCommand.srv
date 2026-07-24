@@ -1,0 +1,5 @@
+string mode
+string gesture_name
+---
+bool success
+string message

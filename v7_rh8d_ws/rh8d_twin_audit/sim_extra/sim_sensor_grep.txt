@@ -1,0 +1,53 @@
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:203:        rf = self.get_interface_value('palm_range', 'value')
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:261:            'thumb': 'thumb_tip_force',
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:262:            'index': 'index_tip_force',
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:263:            'middle': 'middle_tip_force',
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:264:            'ring': 'ring_tip_force',
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:265:            'small': 'small_tip_force',
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:413:        thumb_tip_mag = self.get_tip_force_mag('thumb_tip_force')
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:414:        index_tip_mag = self.get_tip_force_mag('index_tip_force')
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:415:        middle_tip_mag = self.get_tip_force_mag('middle_tip_force')
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:416:        ring_tip_mag = self.get_tip_force_mag('ring_tip_force')
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:417:        small_tip_mag = self.get_tip_force_mag('small_tip_force')
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:419:        palm_range = self.get_interface_value('palm_range', 'value')
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:420:        palm_range = -1.0 if palm_range is None else palm_range
+src/rh8d_mujoco_control/rh8d_mujoco_control/rh8dR_object_pick_services.py:425:            f"ring={ring_contact}, small={small_contact}, palm_range={palm_range:.4f} | "
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:41:      interfaces, such as palm_range/value and fingertip force x/y/z values.
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:101:      <sensor name="palm_range">
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:105:      <sensor name="thumb_tip_force">
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:111:      <sensor name="index_tip_force">
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:116:      <sensor name="middle_tip_force">
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:122:      <sensor name="ring_tip_force">
+src/rh8d_mujoco_control/description/rh8dR_mujoco_ros2_control.xacro:128:      <sensor name="small_tip_force">
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:255:                            <site name="palm_range_site" pos="-0.0210 -0.009 0.0475" euler="-1.45 -0.2 0.5" size="0.003" rgba="0 0 1 1"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:306:                                      <site name="thumb_tip_force_site" pos="0.005 -0.0015 -0.014" quat="0 0 1 1" size="0.00778" rgba="1 0 0 0"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:353:                                    <site name="index_tip_force_site" pos="-0.005 -0.002 -0.014" quat="0 0 1 1" size="0.00725" rgba="1 0 0 0"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:399:                                    <site name="middle_tip_force_site" pos="-0.005 -0.002 -0.014" quat="0 0 1 1" size="0.00725" rgba="1 0 0 0"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:445:                                    <site name="ring_tip_force_site" pos="-0.005 -0.002 -0.014" quat="0 0 1 1" size="0.00725" rgba="1 0 0 0"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:491:                                    <site name="small_tip_force_site" pos="-0.005 -0.002 -0.014" quat="0 0 1 1" size="0.00725" rgba="1 0 0 0"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:621:    <rangefinder name="palm_range" site="palm_range_site"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:624:    <force name="thumb_tip_force"  site="thumb_tip_force_site"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:625:    <force name="index_tip_force"  site="index_tip_force_site"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:626:    <force name="middle_tip_force" site="middle_tip_force_site"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:627:    <force name="ring_tip_force"   site="ring_tip_force_site"/>
+src/ur5e_mujoco_description/mjcf/ur5e_rh8d.xml:628:    <force name="small_tip_force"  site="small_tip_force_site"/>
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:753:    //        thumb_tip_force
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:754:    //        index_tip_force
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:755:    //        middle_tip_force
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:756:    //        ring_tip_force
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:757:    //        small_tip_force
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:766:    //        palm_range
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:771:    //        palm_range/value
+src/mujoco_ros2_control/mujoco_ros2_control/src/mujoco_system.cpp:841:      sensor.name == "palm_range" ||
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:125:          <site name="palm_range_site" pos="-0.0210 -0.009 0.0475" euler="-1.5708 0 0" size="0.003" rgba="0 0 1 1"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:177:                    <site name="thumb_tip_force_site" pos="0.005 -0.0015 -0.014" quat="0 0 1 1" size="0.00778" rgba="1 0 0 0"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:224:                  <site name="index_tip_force_site" pos="-0.005 -0.002 -0.014" quat="0 0 1 1" size="0.00725" rgba="1 0 0 0"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:270:                  <site name="middle_tip_force_site" pos="-0.005 -0.002 -0.014" quat="0 0 1 1" size="0.00725" rgba="1 0 0 0"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:316:                  <site name="ring_tip_force_site" pos="-0.005 -0.002 -0.014" quat="0 0 1 1" size="0.00725" rgba="1 0 0 0"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:362:                  <site name="small_tip_force_site" pos="-0.005 -0.002 -0.014" quat="0 0 1 1" size="0.00725" rgba="1 0 0 0"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:478:    <rangefinder name="palm_range" site="palm_range_site"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:481:    <force name="thumb_tip_force"  site="thumb_tip_force_site"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:482:    <force name="index_tip_force"  site="index_tip_force_site"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:483:    <force name="middle_tip_force" site="middle_tip_force_site"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:484:    <force name="ring_tip_force"   site="ring_tip_force_site"/>
+src/rh8d_mujoco_description/mjcf/rh8dR.xml:485:    <force name="small_tip_force"  site="small_tip_force_site"/>

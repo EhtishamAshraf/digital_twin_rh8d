@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="RH8DR">
+
+    <xacro:arg name="parent" default="world"/>
+    <xacro:arg name="mount_xyz" default="0 0 0"/>
+    <xacro:arg name="mount_rpy" default="0 0 1.57"/>
+
+    <!-- Include base_link, Base:1, and Forearm:1 -->
+    <xacro:include filename="$(find rh8d_mujoco_description)/urdf/rh8dR_base_forearm.xacro"/>
+
+    <!-- Include Palm and palm_assembly -->
+    <xacro:include filename="$(find rh8d_mujoco_description)/urdf/rh8dR_palm.xacro"/>
+
+    <!-- Include Fingers -->
+    <xacro:include filename="$(find rh8d_mujoco_description)/urdf/rh8dR_thumb.xacro"/>
+    <xacro:include filename="$(find rh8d_mujoco_description)/urdf/rh8dR_index.xacro"/>
+    <xacro:include filename="$(find rh8d_mujoco_description)/urdf/rh8dR_middle.xacro"/>
+    <xacro:include filename="$(find rh8d_mujoco_description)/urdf/rh8dR_ring.xacro"/>
+    <xacro:include filename="$(find rh8d_mujoco_description)/urdf/rh8dR_small.xacro"/>
+
+    <!-- MuJoCo ros2_control definitions -->
+    <xacro:include filename="$(find rh8d_mujoco_control)/description/rh8dR_mujoco_ros2_control.xacro"/>
+</robot>

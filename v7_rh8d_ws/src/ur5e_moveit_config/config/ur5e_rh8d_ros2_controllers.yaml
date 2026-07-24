@@ -1,0 +1,60 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    arm_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    hand_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+arm_trajectory_controller:
+  ros__parameters:
+    joints:
+      - shoulder_pan_joint
+      - shoulder_lift_joint
+      - elbow_joint
+      - wrist_1_joint
+      - wrist_2_joint
+      - wrist_3_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+
+hand_trajectory_controller:
+  ros__parameters:
+    joints:
+      - forearm:1--base:1
+      - palm_axis:1--forearm:1
+      - palm_assembly:1--palm_axis:1
+      - Thumb_axis--palm_assembly:1
+
+      - Thumb_Methacarpal--Thumb_axis
+      - Thumb_Proximal--Thumb_Methacarpal
+      - Thumb_Distal--Thumb_Proximal
+
+      - Index_Proximal--palm_assembly:1
+      - Index_Middle--Index_Proximal
+      - Index_Distal--Index_Middle
+
+      - Middle_Proximal--palm_assembly:1
+      - Middle_Middle--Middle_Proximal
+      - Middle_Distal--Middle_Middle
+
+      - Ring_Proximal--palm_assembly:1
+      - Ring_Middle--Ring_Proximal
+      - Ring_Distal--Ring_Middle
+
+      - Small_Proximal--palm_assembly:1
+      - Small_Middle--Small_Proximal
+      - Small_Distal--Small_Middle
+
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position

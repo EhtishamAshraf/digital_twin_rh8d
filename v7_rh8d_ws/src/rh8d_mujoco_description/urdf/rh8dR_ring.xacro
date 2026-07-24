@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Ring Proximal -->
+    <link name="Ring_Proximal">
+    <inertial>
+      <origin xyz="-0.00506284081372 -0.000180313709044 -0.0109171059885" rpy="0 0 0"/>
+      <mass value="0.00525864"/>
+      <inertia ixx="5.33998e-07" ixy="2.78487e-10" ixz="-8.95438e-13" iyy="5.63087e-07" iyz="3.11448e-08" izz="1.84796e-07"/>
+    </inertial>
+    <visual>
+        <origin xyz="-0.00506248142699 0 -0.0129378438142" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/phalanx.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="Ring_Proximal_color">
+        <color rgba="0.74902 0.74902 0.74902 1.0"/>
+        </material>
+    </visual>
+    <collision>
+        <origin xyz="-0.00506248142699 0 -0.0129378438142" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/phalanx.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+    </collision>
+    </link>
+
+    <!-- Joint: palm_assembly:1 -> Ring_Proximal -->
+    <joint name="Ring_Proximal--palm_assembly:1" type="revolute">
+        <origin xyz="0.000973216829098 -0.0139441965271 0.0805959138174" rpy="-3.11901269802 0.171571312654 0.262906952385"/>
+        <axis xyz="-1.0 0.0 0.0"/>
+        <parent link="palm_assembly:1"/>
+        <child link="Ring_Proximal"/>
+        <dynamics damping="0.05" friction="0.005"/>
+        <limit effort="0.5" lower="0" upper="1.57079632679" velocity="10.0"/>
+    </joint>
+
+    <!-- Ring Middle -->
+    <link name="Ring_Middle">
+    <inertial>
+      <origin xyz="-0.00506274155761 -0.000180305174392 -0.0109171146709" rpy="0 0 0"/>
+      <mass value="0.00525864"/>
+      <inertia ixx="5.33998e-07" ixy="2.78487e-10" ixz="-8.95438e-13" iyy="5.63087e-07" iyz="3.11448e-08" izz="1.84796e-07"/>
+    </inertial>
+    <visual>
+        <origin xyz="-0.00506238083398 -1.10193487952e-07 -0.0129368640729" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/phalanx.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="Ring_Middle_color">
+        <color rgba="0.74902 0.74902 0.74902 1.0"/>
+        </material>
+    </visual>
+    <collision>
+        <origin xyz="-0.00506238083398 -1.10193487952e-07 -0.0129368640729" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/phalanx.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+    </collision>
+    </link>
+
+    <!-- Joint: Ring_Proximal -> Ring_Middle -->
+    <joint name="Ring_Middle--Ring_Proximal" type="revolute">
+    <origin xyz="6.24427654286e-05 0 -0.0258754729631" rpy="0 0 0"/>
+    <axis xyz="-1.0 0.0 0.0"/>
+    <parent link="Ring_Proximal"/>
+    <child link="Ring_Middle"/>
+    
+    <mimic joint="Ring_Proximal--palm_assembly:1"
+                multiplier="0.9"
+                offset="0.0"/>
+
+    <dynamics damping="0.02" friction="0.0"/>
+    <limit effort="0.5" lower="0" upper="1.57079632679" velocity="10.0"/>
+    </joint>
+
+    <!-- Ring Distal -->
+    <link name="Ring_Distal">
+    <inertial>
+      <origin xyz="-0.00452232167354 -0.00261988745332 -0.0121254207908" rpy="0 0 0"/>
+      <mass value="0.00650951"/>
+      <inertia ixx="5.02476e-07" ixy="-6.66361e-09" ixz="5.02846e-09" iyy="5.2803e-07" iyz="-5.85168e-08" izz="3.30404e-07"/>
+    </inertial>
+    <visual>
+        <origin xyz="-0.0050625351673 1.36100817921e-07 -7.35728582724e-07" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/tip.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="Ring_Distal_color">
+        <color rgba="0.74902 0.74902 0.74902 1.0"/>
+        </material>
+    </visual>
+    <collision>
+        <origin xyz="-0.0050625351673 1.36100817921e-07 -7.35728582724e-07" rpy="0 0 0"/>
+        <geometry>
+        <mesh filename="package://rh8d_mujoco_description/meshes/tip.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+    </collision>
+    </link>
+
+    <!-- Joint: Ring_Middle -> Ring_Distal -->
+    <joint name="Ring_Distal--Ring_Middle" type="revolute">
+        <origin xyz="6.25413009675e-05 0 -0.0258744878078" rpy="0 0 0"/>
+        <axis xyz="-1.0 0.0 0.0"/>
+        <parent link="Ring_Middle"/>
+        <child link="Ring_Distal"/>
+            
+        <mimic joint="Ring_Middle--Ring_Proximal"
+                    multiplier="0.9"
+                    offset="0.0"/>
+
+        <dynamics damping="0.02" friction="0.0"/>
+        <limit effort="0.5" lower="0" upper="1.57079632679" velocity="10.0"/>
+    </joint>
+
+</robot>
