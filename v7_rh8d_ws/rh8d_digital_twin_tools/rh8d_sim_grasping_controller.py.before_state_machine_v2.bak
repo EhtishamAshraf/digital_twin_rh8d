@@ -1,0 +1,307 @@
+#!/usr/bin/env python3
+
+import math
+import os
+
+import rclpy
+from rclpy.node import Node
+
+from std_msgs.msg import Bool, Float64MultiArray
+from hand_sensors_interfaces.msg import FTS3Sensors, SingleCommand
+
+
+MOTOR_ORDER = [
+    "forearm:1--base:1",
+    "palm_axis:1--forearm:1",
+    "palm_assembly:1--palm_axis:1",
+    "thumb_adduction_motor",
+    "thumb_flexion_motor",
+    "index_flexion_motor",
+    "middle_flexion_motor",
+    "ring_small_flexion_motor",
+]
+
+DEFAULT_OPEN_COMMAND = [
+    2052.0,
+    2010.0,
+    2191.0,
+    3971.0,
+    100.0,
+    100.0,
+    100.0,
+    0.0,
+]
+
+FINGER_TO_MOTOR_INDEX = {
+    "thumb": 4,
+    "index": 5,
+    "middle": 6,
+    "ring": 7,
+    "small": 7,
+}
+
+FINGER_TO_MOTOR_NAME = {
+    "thumb": "thumb_flexion_motor",
+    "index": "index_flexion_motor",
+    "middle": "middle_flexion_motor",
+    "ring": "ring_small_flexion_motor",
+    "small": "ring_small_flexion_motor",
+}
+
+F_DES_TOPICS = {
+    "thumb": "/rh8dr/thumb_force_sensor/f_des",
+    "index": "/rh8dr/index_force_sensor/f_des",
+    "middle": "/rh8dr/middle_force_sensor/f_des",
+    "ring": "/rh8dr/ring_force_sensor/f_des",
+}
+
+ERROR_TOPICS = {
+    "thumb": "/rh8dr/thumb_force_sensor/error",
+    "index": "/rh8dr/index_force_sensor/error",
+    "middle": "/rh8dr/middle_force_sensor/error",
+    "ring": "/rh8dr/ring_force_sensor/error",
+}
+
+INTEGRATOR_INPUT_TOPICS = {
+    "thumb": "/rh8dr/thumb_flexion_motor/integrator_input",
+    "index": "/rh8dr/index_flexion_motor/integrator_input",
+    "middle": "/rh8dr/middle_flexion_motor/integrator_input",
+    "ring": "/rh8dr/ring_small_flexion_motor/integrator_input",
+}
+
+
+def clamp(x, lo, hi):
+    return max(lo, min(hi, x))
+
+
+class RH8DSimGraspingController(Node):
+    def __init__(self):
+        super().__init__("rh8d_sim_grasping_controller")
+
+        self.control_hz = float(os.environ.get("RH8D_SIM_GRASP_HZ", "50.0"))
+        self.dt = 1.0 / self.control_hz
+
+        # Matches hardware code found in your grasping_controller.cpp.
+        self.kp = float(os.environ.get("RH8D_SIM_GRASP_KP", "600.0"))
+
+        # Matches hardware config constant_velocity.
+        self.constant_velocity = float(
+            os.environ.get("RH8D_SIM_GRASP_CONSTANT_VELOCITY", "400.0")
+        )
+
+        self.default_desired_force = float(
+            os.environ.get("RH8D_SIM_GRASP_DESIRED_FORCE", "3.0")
+        )
+
+        self.min_tick = 0.0
+        self.max_tick = 4000.0
+
+        self.enabled = False
+
+        self.motor_command = list(DEFAULT_OPEN_COMMAND)
+
+        self.force = {
+            "thumb": 0.0,
+            "index": 0.0,
+            "middle": 0.0,
+            "ring": 0.0,
+            "small": 0.0,
+        }
+
+        self.filtered_force = dict(self.force)
+
+        self.desired_force = {
+            "thumb": self.default_desired_force,
+            "index": self.default_desired_force,
+            "middle": self.default_desired_force,
+            "ring": self.default_desired_force,
+        }
+
+        self.active_fingers = ["thumb", "index", "middle", "ring"]
+
+        self.command_pub = self.create_publisher(
+            Float64MultiArray,
+            "/rh8dr/hand_position_controller/commands",
+            10,
+        )
+
+        self.error_pubs = {
+            finger: self.create_publisher(SingleCommand, topic, 10)
+            for finger, topic in ERROR_TOPICS.items()
+        }
+
+        self.integrator_input_pubs = {
+            finger: self.create_publisher(SingleCommand, topic, 10)
+            for finger, topic in INTEGRATOR_INPUT_TOPICS.items()
+        }
+
+        self.create_subscription(
+            FTS3Sensors,
+            "/rh8dr/fts_broadcaster/fingertip_force_sensors",
+            self.force_callback,
+            10,
+        )
+
+        self.create_subscription(
+            Bool,
+            "/rh8dr/sim_grasping_controller/enable",
+            self.enable_callback,
+            10,
+        )
+
+        self.create_subscription(
+            Bool,
+            "/rh8dr/sim_grasping_controller/open",
+            self.open_callback,
+            10,
+        )
+
+        for finger, topic in F_DES_TOPICS.items():
+            self.create_subscription(
+                SingleCommand,
+                topic,
+                lambda msg, f=finger: self.f_des_callback(f, msg),
+                10,
+            )
+
+        self.timer = self.create_timer(self.dt, self.control_loop)
+
+        self.loop_count = 0
+
+        self.get_logger().info("RH8D sim hardware-like grasping controller started.")
+        self.get_logger().info(f"Kp = {self.kp}")
+        self.get_logger().info(f"constant_velocity = {self.constant_velocity}")
+        self.get_logger().info(f"default desired force = {self.default_desired_force} N")
+        self.get_logger().info("Enable topic: /rh8dr/sim_grasping_controller/enable")
+        self.get_logger().info("Open topic:   /rh8dr/sim_grasping_controller/open")
+
+    def enable_callback(self, msg):
+        self.enabled = bool(msg.data)
+        self.get_logger().info(f"enabled = {self.enabled}")
+
+    def open_callback(self, msg):
+        if bool(msg.data):
+            self.enabled = False
+            self.motor_command = list(DEFAULT_OPEN_COMMAND)
+            self.publish_motor_command()
+            self.get_logger().info("Opening hand and disabling sim grasping controller.")
+
+    def f_des_callback(self, finger, msg):
+        self.desired_force[finger] = float(msg.value)
+        self.get_logger().info(
+            f"desired force updated: {finger} = {self.desired_force[finger]:.2f} N"
+        )
+
+    def force_callback(self, msg):
+        raw = {}
+        for name, norm in zip(msg.motor_names, msg.norm_forces):
+            raw[name] = float(norm)
+
+        # Ring and small share the same real motor.
+        ring_small_force = max(raw.get("ring", 0.0), raw.get("small", 0.0))
+
+        raw["ring"] = ring_small_force
+        raw["small"] = ring_small_force
+
+        alpha = 0.15
+        for finger in self.filtered_force:
+            self.force[finger] = raw.get(finger, 0.0)
+            self.filtered_force[finger] = (
+                (1.0 - alpha) * self.filtered_force[finger]
+                + alpha * self.force[finger]
+            )
+
+    def publish_single_command(self, pub, dof_name, value):
+        msg = SingleCommand()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = "base_link"
+        msg.dof_name = dof_name
+        msg.value = float(value)
+        pub.publish(msg)
+
+    def publish_motor_command(self):
+        msg = Float64MultiArray()
+        msg.data = [float(v) for v in self.motor_command]
+        self.command_pub.publish(msg)
+
+    def control_loop(self):
+        if not self.enabled:
+            self.loop_count += 1
+            return
+
+        for finger in self.active_fingers:
+            measured_force = self.filtered_force[finger]
+            desired_force = self.desired_force[finger]
+
+            force_error = desired_force - measured_force
+
+            command = self.kp * force_error
+            command = clamp(
+                command,
+                -self.constant_velocity,
+                self.constant_velocity,
+            )
+
+            # Hardware integrator concept:
+            # new_motor_position = old_motor_position + command * dt
+            motor_idx = FINGER_TO_MOTOR_INDEX[finger]
+
+            self.motor_command[motor_idx] += command * self.dt
+            self.motor_command[motor_idx] = clamp(
+                self.motor_command[motor_idx],
+                self.min_tick,
+                self.max_tick,
+            )
+
+            self.publish_single_command(
+                self.error_pubs[finger],
+                f"{finger}_force_sensor",
+                force_error,
+            )
+
+            self.publish_single_command(
+                self.integrator_input_pubs[finger],
+                FINGER_TO_MOTOR_NAME[finger],
+                command,
+            )
+
+        # Keep ring/small shared motor within limits.
+        self.motor_command[7] = clamp(self.motor_command[7], self.min_tick, self.max_tick)
+
+        self.publish_motor_command()
+
+        self.loop_count += 1
+
+        if self.loop_count % int(self.control_hz) == 0:
+            self.get_logger().info(
+                "force "
+                f"T={self.filtered_force['thumb']:.2f}, "
+                f"I={self.filtered_force['index']:.2f}, "
+                f"M={self.filtered_force['middle']:.2f}, "
+                f"R/S={self.filtered_force['ring']:.2f}; "
+                "desired "
+                f"T={self.desired_force['thumb']:.2f}, "
+                f"I={self.desired_force['index']:.2f}, "
+                f"M={self.desired_force['middle']:.2f}, "
+                f"R={self.desired_force['ring']:.2f}; "
+                "ticks "
+                f"T={self.motor_command[4]:.0f}, "
+                f"I={self.motor_command[5]:.0f}, "
+                f"M={self.motor_command[6]:.0f}, "
+                f"R/S={self.motor_command[7]:.0f}"
+            )
+
+
+def main():
+    rclpy.init()
+    node = RH8DSimGraspingController()
+
+    try:
+        rclpy.spin(node)
+    finally:
+        node.destroy_node()
+        rclpy.shutdown()
+
+
+if __name__ == "__main__":
+    main()

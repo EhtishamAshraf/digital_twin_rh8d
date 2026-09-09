@@ -1,0 +1,652 @@
+#!/usr/bin/env python3
+
+import math
+import rclpy
+from rclpy.node import Node
+
+from std_msgs.msg import Float64MultiArray
+from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+from sensor_msgs.msg import JointState
+from hand_sensors_interfaces.msg import FTS3Sensors
+
+
+HARDWARE_ORDER = [
+    "forearm:1--base:1",
+    "palm_axis:1--forearm:1",
+    "palm_assembly:1--palm_axis:1",
+    "thumb_adduction_motor",
+    "thumb_flexion_motor",
+    "index_flexion_motor",
+    "middle_flexion_motor",
+    "ring_small_flexion_motor",
+]
+
+SIM_JOINT_ORDER = [
+    "forearm:1--base:1",
+    "palm_axis:1--forearm:1",
+    "palm_assembly:1--palm_axis:1",
+    "Thumb_axis--palm_assembly:1",
+
+    "Thumb_Methacarpal--Thumb_axis",
+    "Thumb_Proximal--Thumb_Methacarpal",
+    "Thumb_Distal--Thumb_Proximal",
+
+    "Index_Proximal--palm_assembly:1",
+    "Index_Middle--Index_Proximal",
+    "Index_Distal--Index_Middle",
+
+    "Middle_Proximal--palm_assembly:1",
+    "Middle_Middle--Middle_Proximal",
+    "Middle_Distal--Middle_Middle",
+
+    "Ring_Proximal--palm_assembly:1",
+    "Ring_Middle--Ring_Proximal",
+    "Ring_Distal--Ring_Middle",
+
+    "Small_Proximal--palm_assembly:1",
+    "Small_Middle--Small_Proximal",
+    "Small_Distal--Small_Middle",
+]
+
+DEFAULT_OPEN_HW = [
+    2052.0,
+    2010.0,
+    2191.0,
+    3971.0,
+    100.0,
+    100.0,
+    100.0,
+    0.0,
+]
+
+FINGER_HW_INDEX = {
+    "thumb": 4,
+    "index": 5,
+    "middle": 6,
+    "ring": 7,
+    "small": 7,
+}
+
+FINGER_JOINTS = {
+    "thumb": (
+        "Thumb_Methacarpal--Thumb_axis",
+        "Thumb_Proximal--Thumb_Methacarpal",
+        "Thumb_Distal--Thumb_Proximal",
+    ),
+    "index": (
+        "Index_Proximal--palm_assembly:1",
+        "Index_Middle--Index_Proximal",
+        "Index_Distal--Index_Middle",
+    ),
+    "middle": (
+        "Middle_Proximal--palm_assembly:1",
+        "Middle_Middle--Middle_Proximal",
+        "Middle_Distal--Middle_Middle",
+    ),
+    "ring": (
+        "Ring_Proximal--palm_assembly:1",
+        "Ring_Middle--Ring_Proximal",
+        "Ring_Distal--Ring_Middle",
+    ),
+    "small": (
+        "Small_Proximal--palm_assembly:1",
+        "Small_Middle--Small_Proximal",
+        "Small_Distal--Small_Middle",
+    ),
+}
+
+
+CONTROL_HZ = 15.0
+DT = 1.0 / CONTROL_HZ
+
+FREE_CLOSE_RATE_TICKS = 450.0
+CONTACT_CLOSE_RATE_TICKS = 120.0
+RELAX_RATE_TICKS = 450.0
+
+CONTACT_FORCE_N = 1.0
+HARD_FORCE_N = 45.0
+EXTREME_FORCE_N = 75.0
+
+# Hold/deadband logic to reduce jitter after grasp.
+HOLD_FORCE_MIN_N = 2.0
+HOLD_FORCE_MAX_N = 35.0
+HOLD_RELEASE_LOW_N = 0.8
+HOLD_RELEASE_HIGH_N = 55.0
+HOLD_NEAR_TARGET_TICKS = 120.0
+HOLD_DWELL_SEC = 0.80
+HOLD_DWELL_LOOPS = int(HOLD_DWELL_SEC * CONTROL_HZ)
+
+MIN_PROXIMAL_AFTER_CONTACT = 0.55
+NORMAL_PROXIMAL_MARGIN = 0.06
+HARD_PROXIMAL_MARGIN = 0.02
+
+PUBLISH_DEADBAND_RAD = 0.006
+
+
+def clamp(x, lo, hi):
+    return max(lo, min(hi, x))
+
+
+def move_towards(current, target, max_step):
+    if current < target:
+        return min(current + max_step, target)
+    if current > target:
+        return max(current - max_step, target)
+    return current
+
+
+def clamp_mapping(value, in_min, in_max, out_min, out_max):
+    if value < in_min:
+        return out_min
+    if value > in_max:
+        return out_max
+    return (value - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+
+
+def wrist_rotation_ticks_to_rad(tick):
+    return clamp_mapping(tick, 0.0, 4095.0, -math.pi / 2.0, math.pi / 2.0)
+
+
+def wrist_adduction_ticks_to_rad(tick):
+    return clamp_mapping(tick, 0.0, 4095.0, -math.pi / 4.0, math.pi / 4.0)
+
+
+def wrist_flexion_ticks_to_rad(tick):
+    return clamp_mapping(tick, 0.0, 4095.0, -math.pi / 4.0, math.pi / 4.0)
+
+
+def thumb_adduction_ticks_to_rad(tick):
+    return clamp_mapping(tick, 0.0, 4095.0, 0.0, math.pi / 2.0)
+
+
+def normal_finger_stages(tick):
+    proximal = clamp_mapping(tick, 0.0, 2000.0, 0.0, math.pi / 2.0)
+    middle = clamp_mapping(tick, 2000.0, 3800.0, 0.0, math.pi / 2.0)
+    distal = clamp_mapping(tick, 3800.0, 4095.0, 0.0, math.pi / 4.0)
+    return proximal, middle, distal
+
+
+def thumb_finger_stages(tick):
+    thumb_mcp = clamp_mapping(tick, 2000.0, 3800.0, 0.0, math.pi / 2.0)
+    thumb_pip = clamp_mapping(tick, 0.0, 2000.0, 0.0, math.pi / 2.0)
+    thumb_dip = clamp_mapping(tick, 3800.0, 4095.0, 0.0, math.pi / 4.0)
+    return thumb_mcp, thumb_pip, thumb_dip
+
+
+class RH8DCompliantCommandAdapter(Node):
+    def __init__(self):
+        super().__init__("rh8d_sim_hardware_command_adapter")
+
+        self.desired_hw = list(DEFAULT_OPEN_HW)
+        self.current_hw = list(DEFAULT_OPEN_HW)
+
+        self.filtered_force = {
+            "thumb": 0.0,
+            "index": 0.0,
+            "middle": 0.0,
+            "ring": 0.0,
+            "small": 0.0,
+        }
+
+        self.latest_joint_pos = {name: 0.0 for name in SIM_JOINT_ORDER}
+
+        self.contact_latched = {
+            "thumb": False,
+            "index": False,
+            "middle": False,
+            "ring": False,
+            "small": False,
+        }
+
+        self.latched_proximal = {
+            "thumb": 0.0,
+            "index": 0.0,
+            "middle": 0.0,
+            "ring": 0.0,
+            "small": 0.0,
+        }
+
+        # New anti-jitter hold state.
+        self.hold_latched = {
+            "thumb": False,
+            "index": False,
+            "middle": False,
+            "ring": False,
+        }
+
+        self.hold_hw = {
+            "thumb": DEFAULT_OPEN_HW[4],
+            "index": DEFAULT_OPEN_HW[5],
+            "middle": DEFAULT_OPEN_HW[6],
+            "ring": DEFAULT_OPEN_HW[7],
+        }
+
+        self.hold_counter = {
+            "thumb": 0,
+            "index": 0,
+            "middle": 0,
+            "ring": 0,
+        }
+
+        self.last_published_positions = None
+        self.loop_count = 0
+
+        self.create_subscription(
+            Float64MultiArray,
+            "/rh8dr/hand_position_controller/commands",
+            self.command_callback,
+            10,
+        )
+
+        self.create_subscription(
+            FTS3Sensors,
+            "/rh8dr/fts_broadcaster/fingertip_force_sensors",
+            self.force_callback,
+            10,
+        )
+
+        self.create_subscription(
+            JointState,
+            "/joint_states",
+            self.joint_state_callback,
+            10,
+        )
+
+        self.pub = self.create_publisher(
+            JointTrajectory,
+            "/hand_trajectory_controller/joint_trajectory",
+            10,
+        )
+
+        self.timer = self.create_timer(DT, self.control_loop)
+
+        self.get_logger().info("RH8D v4 compliant adapter with grasp-hold deadband started.")
+
+    def clear_all_latches(self):
+        for finger in self.contact_latched:
+            self.contact_latched[finger] = False
+            self.latched_proximal[finger] = 0.0
+
+        for finger in self.hold_latched:
+            self.hold_latched[finger] = False
+            self.hold_counter[finger] = 0
+
+    def clear_motor_hold(self, motor_name):
+        self.hold_latched[motor_name] = False
+        self.hold_counter[motor_name] = 0
+
+    def command_callback(self, msg):
+        if len(msg.data) < 8:
+            self.get_logger().warn(f"Expected 8 values, got {len(msg.data)}. Ignoring.")
+            return
+
+        old_desired = list(self.desired_hw)
+        self.desired_hw = [float(v) for v in msg.data[:8]]
+
+        # Opening clears all latches.
+        if sum(self.desired_hw[4:8]) < sum(old_desired[4:8]):
+            self.clear_all_latches()
+
+        # A new larger closing command should release hold for that motor.
+        command_map = {
+            "thumb": 4,
+            "index": 5,
+            "middle": 6,
+            "ring": 7,
+        }
+
+        for motor_name, idx in command_map.items():
+            if self.desired_hw[idx] > old_desired[idx] + 50.0:
+                self.clear_motor_hold(motor_name)
+
+        self.get_logger().info(
+            "New desired command: "
+            f"thumb={self.desired_hw[4]:.0f}, "
+            f"index={self.desired_hw[5]:.0f}, "
+            f"middle={self.desired_hw[6]:.0f}, "
+            f"ring/small={self.desired_hw[7]:.0f}"
+        )
+
+    def force_callback(self, msg):
+        raw = {}
+        for name, norm in zip(msg.motor_names, msg.norm_forces):
+            raw[name] = float(norm)
+
+        ring_small = max(raw.get("ring", 0.0), raw.get("small", 0.0))
+        raw["ring"] = ring_small
+        raw["small"] = ring_small
+
+        # Stronger smoothing than previous version to reduce chatter.
+        alpha = 0.10
+        for finger in self.filtered_force:
+            self.filtered_force[finger] = (
+                (1.0 - alpha) * self.filtered_force[finger]
+                + alpha * raw.get(finger, 0.0)
+            )
+
+    def joint_state_callback(self, msg):
+        for name, pos in zip(msg.name, msg.position):
+            if name in self.latest_joint_pos:
+                self.latest_joint_pos[name] = float(pos)
+
+    def update_one_motor_with_hold(self, motor_name, idx, force_name):
+        force = self.filtered_force.get(force_name, 0.0)
+        target = self.desired_hw[idx]
+        current = self.current_hw[idx]
+
+        opening = target < current - 1.0
+
+        if opening:
+            self.clear_motor_hold(motor_name)
+            self.current_hw[idx] = move_towards(
+                current,
+                target,
+                FREE_CLOSE_RATE_TICKS * DT,
+            )
+            return
+
+        # Main v5 fix:
+        # If hold is already latched, keep it sticky.
+        # Do not clear it just because force briefly crosses HARD_FORCE_N.
+        if self.hold_latched[motor_name]:
+            if force < HOLD_RELEASE_LOW_N:
+                # Contact may be temporarily lost. Do not release immediately.
+                self.hold_counter[motor_name] += 1
+
+                if self.hold_counter[motor_name] >= int(0.7 * CONTROL_HZ):
+                    self.clear_motor_hold(motor_name)
+                    self.current_hw[idx] = move_towards(
+                        current,
+                        target,
+                        CONTACT_CLOSE_RATE_TICKS * DT,
+                    )
+                else:
+                    self.current_hw[idx] = self.hold_hw[motor_name]
+                return
+
+            if force > HOLD_RELEASE_HIGH_N:
+                # Only release/relax for genuinely high force.
+                self.clear_motor_hold(motor_name)
+                self.current_hw[idx] = max(
+                    0.0,
+                    current - 0.5 * RELAX_RATE_TICKS * DT,
+                )
+                return
+
+            # Stable grasp region:
+            # Hold the virtual motor target exactly.
+            self.hold_counter[motor_name] = 0
+            self.current_hw[idx] = self.hold_hw[motor_name]
+            return
+
+        # Not currently holding.
+        if force >= EXTREME_FORCE_N:
+            self.clear_motor_hold(motor_name)
+            self.current_hw[idx] = max(
+                0.0,
+                current - RELAX_RATE_TICKS * DT,
+            )
+            return
+
+        if force >= HARD_FORCE_N:
+            self.clear_motor_hold(motor_name)
+            self.current_hw[idx] = max(
+                0.0,
+                current - 0.5 * RELAX_RATE_TICKS * DT,
+            )
+            return
+
+        near_target = abs(target - current) <= HOLD_NEAR_TARGET_TICKS
+        force_good = HOLD_FORCE_MIN_N <= force <= HOLD_FORCE_MAX_N
+
+        if force_good and near_target:
+            self.hold_counter[motor_name] += 1
+
+            if self.hold_counter[motor_name] >= HOLD_DWELL_LOOPS:
+                self.hold_latched[motor_name] = True
+                self.hold_hw[motor_name] = current
+                self.current_hw[idx] = current
+                self.get_logger().info(
+                    f"HOLD latched for {motor_name}: "
+                    f"ticks={current:.0f}, force={force:.2f} N"
+                )
+                return
+        else:
+            self.hold_counter[motor_name] = 0
+
+        if force >= CONTACT_FORCE_N:
+            self.current_hw[idx] = move_towards(
+                current,
+                target,
+                CONTACT_CLOSE_RATE_TICKS * DT,
+            )
+        else:
+            self.current_hw[idx] = move_towards(
+                current,
+                target,
+                FREE_CLOSE_RATE_TICKS * DT,
+            )
+
+    def update_virtual_motor_ticks(self):
+        for i in range(4):
+            self.current_hw[i] = move_towards(
+                self.current_hw[i],
+                self.desired_hw[i],
+                FREE_CLOSE_RATE_TICKS * DT,
+            )
+
+        self.update_one_motor_with_hold("thumb", 4, "thumb")
+        self.update_one_motor_with_hold("index", 5, "index")
+        self.update_one_motor_with_hold("middle", 6, "middle")
+        self.update_one_motor_with_hold("ring", 7, "ring")
+
+        for i in range(8):
+            self.current_hw[i] = clamp(self.current_hw[i], 0.0, 4095.0)
+
+    def latch_contact_if_needed(self, finger, proximal_actual):
+        force = self.filtered_force.get(finger, 0.0)
+
+        if force >= CONTACT_FORCE_N and not self.contact_latched[finger]:
+            self.contact_latched[finger] = True
+            self.latched_proximal[finger] = max(
+                proximal_actual,
+                MIN_PROXIMAL_AFTER_CONTACT,
+            )
+
+        if force < 0.5:
+            self.contact_latched[finger] = False
+            self.latched_proximal[finger] = 0.0
+
+    def apply_normal_finger_compliance(self, finger, proximal_cmd, middle_cmd, distal_cmd):
+        prox_name, _, _ = FINGER_JOINTS[finger]
+        actual_prox = self.latest_joint_pos.get(prox_name, proximal_cmd)
+        force = self.filtered_force.get(finger, 0.0)
+
+        self.latch_contact_if_needed(finger, actual_prox)
+
+        if self.contact_latched[finger]:
+            latched = self.latched_proximal[finger]
+
+            if force >= HARD_FORCE_N:
+                allowed_prox = max(MIN_PROXIMAL_AFTER_CONTACT, latched - 0.08)
+                proximal_cmd = min(proximal_cmd, allowed_prox + HARD_PROXIMAL_MARGIN)
+            else:
+                allowed_prox = max(MIN_PROXIMAL_AFTER_CONTACT, latched)
+                proximal_cmd = min(proximal_cmd, allowed_prox + NORMAL_PROXIMAL_MARGIN)
+
+        return (
+            clamp(proximal_cmd, 0.0, math.pi / 2.0),
+            clamp(middle_cmd, 0.0, math.pi / 2.0),
+            clamp(distal_cmd, 0.0, math.pi / 4.0),
+        )
+
+    def apply_thumb_compliance(self, thumb_mcp, thumb_pip, thumb_dip):
+        actual_pip = self.latest_joint_pos.get(
+            "Thumb_Proximal--Thumb_Methacarpal",
+            thumb_pip,
+        )
+        force = self.filtered_force.get("thumb", 0.0)
+
+        self.latch_contact_if_needed("thumb", actual_pip)
+
+        if self.contact_latched["thumb"]:
+            latched = self.latched_proximal["thumb"]
+
+            if force >= HARD_FORCE_N:
+                allowed_pip = max(MIN_PROXIMAL_AFTER_CONTACT, latched - 0.08)
+                thumb_pip = min(thumb_pip, allowed_pip + HARD_PROXIMAL_MARGIN)
+            else:
+                allowed_pip = max(MIN_PROXIMAL_AFTER_CONTACT, latched)
+                thumb_pip = min(thumb_pip, allowed_pip + NORMAL_PROXIMAL_MARGIN)
+
+        return (
+            clamp(thumb_mcp, 0.0, math.pi / 2.0),
+            clamp(thumb_pip, 0.0, math.pi / 2.0),
+            clamp(thumb_dip, 0.0, math.pi / 4.0),
+        )
+
+    def build_sim_positions(self):
+        hw = dict(zip(HARDWARE_ORDER, self.current_hw))
+
+        thumb_mcp, thumb_pip, thumb_dip = thumb_finger_stages(hw["thumb_flexion_motor"])
+        index_prox, index_mid, index_dist = normal_finger_stages(hw["index_flexion_motor"])
+        middle_prox, middle_mid, middle_dist = normal_finger_stages(hw["middle_flexion_motor"])
+        ring_prox, ring_mid, ring_dist = normal_finger_stages(hw["ring_small_flexion_motor"])
+
+        small_prox, small_mid, small_dist = ring_prox, ring_mid, ring_dist
+
+        thumb_mcp, thumb_pip, thumb_dip = self.apply_thumb_compliance(
+            thumb_mcp,
+            thumb_pip,
+            thumb_dip,
+        )
+
+        index_prox, index_mid, index_dist = self.apply_normal_finger_compliance(
+            "index",
+            index_prox,
+            index_mid,
+            index_dist,
+        )
+
+        middle_prox, middle_mid, middle_dist = self.apply_normal_finger_compliance(
+            "middle",
+            middle_prox,
+            middle_mid,
+            middle_dist,
+        )
+
+        ring_prox, ring_mid, ring_dist = self.apply_normal_finger_compliance(
+            "ring",
+            ring_prox,
+            ring_mid,
+            ring_dist,
+        )
+
+        small_prox, small_mid, small_dist = self.apply_normal_finger_compliance(
+            "small",
+            small_prox,
+            small_mid,
+            small_dist,
+        )
+
+        return [
+            wrist_rotation_ticks_to_rad(hw["forearm:1--base:1"]),
+            wrist_adduction_ticks_to_rad(hw["palm_axis:1--forearm:1"]),
+            wrist_flexion_ticks_to_rad(hw["palm_assembly:1--palm_axis:1"]),
+            thumb_adduction_ticks_to_rad(hw["thumb_adduction_motor"]),
+
+            thumb_mcp,
+            thumb_pip,
+            thumb_dip,
+
+            index_prox,
+            index_mid,
+            index_dist,
+
+            middle_prox,
+            middle_mid,
+            middle_dist,
+
+            ring_prox,
+            ring_mid,
+            ring_dist,
+
+            small_prox,
+            small_mid,
+            small_dist,
+        ]
+
+    def should_publish(self, sim_positions):
+        if self.last_published_positions is None:
+            return True
+
+        max_delta = max(
+            abs(a - b)
+            for a, b in zip(sim_positions, self.last_published_positions)
+        )
+
+        if max_delta > PUBLISH_DEADBAND_RAD:
+            return True
+
+        # When stable, publish only once per second instead of every loop.
+        if self.loop_count % int(CONTROL_HZ) == 0:
+            return True
+
+        return False
+
+    def publish_positions(self, sim_positions):
+        traj = JointTrajectory()
+        traj.joint_names = list(SIM_JOINT_ORDER)
+
+        point = JointTrajectoryPoint()
+        point.positions = sim_positions
+        point.time_from_start.sec = 0
+        point.time_from_start.nanosec = 200_000_000
+
+        traj.points.append(point)
+        self.pub.publish(traj)
+
+        self.last_published_positions = list(sim_positions)
+
+    def control_loop(self):
+        self.update_virtual_motor_ticks()
+        sim_positions = self.build_sim_positions()
+
+        if self.should_publish(sim_positions):
+            self.publish_positions(sim_positions)
+
+        self.loop_count += 1
+
+        if self.loop_count % int(CONTROL_HZ) == 0:
+            self.get_logger().info(
+                "forces "
+                f"T={self.filtered_force['thumb']:.2f}, "
+                f"I={self.filtered_force['index']:.2f}, "
+                f"M={self.filtered_force['middle']:.2f}, "
+                f"R/S={self.filtered_force['ring']:.2f}; "
+                "ticks "
+                f"T={self.current_hw[4]:.0f}, "
+                f"I={self.current_hw[5]:.0f}, "
+                f"M={self.current_hw[6]:.0f}, "
+                f"R/S={self.current_hw[7]:.0f}; "
+                "hold "
+                f"T={int(self.hold_latched['thumb'])}, "
+                f"I={int(self.hold_latched['index'])}, "
+                f"M={int(self.hold_latched['middle'])}, "
+                f"R/S={int(self.hold_latched['ring'])}"
+            )
+
+
+def main():
+    rclpy.init()
+    node = RH8DCompliantCommandAdapter()
+
+    try:
+        rclpy.spin(node)
+    finally:
+        node.destroy_node()
+        rclpy.shutdown()
+
+
+if __name__ == "__main__":
+    main()

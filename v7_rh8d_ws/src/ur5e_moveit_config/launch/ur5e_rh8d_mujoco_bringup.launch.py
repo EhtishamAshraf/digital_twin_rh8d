@@ -224,7 +224,7 @@ def generate_launch_description():
             # gestures_node,
             # cartesian_pickNplace_node,
             # object_pickNplace_node,
-            object_pick_node,
+            # object_pick_node,
         ]
     )
 
