@@ -1,0 +1,3 @@
+model,free_mcp,free_pip,free_combined,contact_mcp,contact_pip,contact_dip,contact_rmse
+CONSTANT,4.489,5.617,5.085,25.999,3.206,7.849,13.64
+SPLIT_ZERO_FRICTION,4.489,5.617,5.085,26.001,3.205,7.849,13.641

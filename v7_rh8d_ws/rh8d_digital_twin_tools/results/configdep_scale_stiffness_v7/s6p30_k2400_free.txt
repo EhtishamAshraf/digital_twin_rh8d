@@ -1,0 +1,79 @@
+
+==================================================================================
+RH8D INDEX DIGITAL TWIN — FULL DYNAMIC HARDWARE REPLAY V1
+==================================================================================
+
+Model:
+/home/ehtisham/Desktop/Robotics_uclv/03_PROJECTS/P1_rh8d_sim/2-MuJoCo/digital_twin/v7_rh8d_ws/src/ur5e_mujoco_description/mjcf/tmp_v7_free_s6p30_k2400.xml
+
+Hardware bag:
+/home/ehtisham/Desktop/Robotics_uclv/03_PROJECTS/P2_rh8d_hardware/rh8d_robot_control/v1_rh8dR_ws/rh8d_dashboard_data/rosbags/rh8d_bag_20260910_103316
+
+Command levels  = 15
+Encoder samples = 5453
+
+Identified nominal parameters:
+  motor delay        = 58.0 ms
+  closing rate       = 1100.0 ticks/s
+  opening rate       = 1575.0 ticks/s
+  encoder/spool      = 6.300 um/tick
+  tendon stiffness   = 2400.0 N/m
+  tendon springrange = [0.04629888 0.09629888]
+
+Open state after settling:
+  MCP = -0.000 deg
+  PIP = -0.000 deg
+  DIP = 0.000 deg
+
+Replay duration = 31.699 s
+MuJoCo steps    = 31699
+
+Running full command -> motor -> spool -> tendon -> finger replay...
+
+==================================================================================
+DYNAMIC FINGER VALIDATION AT SYNCHRONIZED VIDEO FRAMES
+==================================================================================
+
+PHASE   TARGET    MOTOR   HW MCP  SIM MCP   HW PIP  SIM PIP
+----------------------------------------------------------------------------------
+closing    100    100.0     0.00    -0.00     0.00    -0.00
+closing    500    500.0    13.44     8.87     5.55     3.72
+closing   1000   1000.0    30.85    40.53    10.52    17.17
+closing   1500   1500.0    46.46    45.91    15.50    35.14
+closing   2000   2000.0    58.88    35.68    26.67    67.56
+closing   2500   2500.0    59.85    45.33    41.75    87.19
+closing   3000   3000.0    60.97    50.08    62.23    90.00
+closing   3500   3500.0    64.35    55.36    75.27    90.00
+opening   3000   3000.0    52.24    48.71    69.47    90.00
+opening   2500   2500.0    46.77    39.34    52.50    85.41
+opening   2000   2000.0    37.93    37.89    49.78    69.63
+opening   1500   1500.0    37.92    35.48    31.35    50.91
+opening   1000   1000.0    34.04    29.32    12.98    33.17
+opening    500    500.0    14.58    18.46     7.93    10.04
+opening    100    100.0     0.00     9.29     0.00     0.05
+
+==================================================================================
+FULL DYNAMIC REPLAY RESULTS
+==================================================================================
+
+MOTOR LAYER
+  encoder RMSE       = 23.38 ticks
+  median abs error   = 0.00 ticks
+  95% abs error      = 39.00 ticks
+
+FINGER LAYER
+  MCP RMSE           = 9.168 deg
+  PIP RMSE           = 22.878 deg
+  combined MCP/PIP   = 17.428 deg
+
+  DIP is simulated but remains excluded from quantitative validation.
+
+Saved:
+/home/ehtisham/Desktop/Robotics_uclv/03_PROJECTS/P1_rh8d_sim/2-MuJoCo/digital_twin/v7_rh8d_ws/rh8d_digital_twin_tools/results/index_dynamic_replay_v1.csv
+/home/ehtisham/Desktop/Robotics_uclv/03_PROJECTS/P1_rh8d_sim/2-MuJoCo/digital_twin/v7_rh8d_ws/rh8d_digital_twin_tools/results/index_dynamic_reference_v1.csv
+/home/ehtisham/Desktop/Robotics_uclv/03_PROJECTS/P1_rh8d_sim/2-MuJoCo/digital_twin/v7_rh8d_ws/rh8d_digital_twin_tools/results/index_dynamic_motor_v1.png
+/home/ehtisham/Desktop/Robotics_uclv/03_PROJECTS/P1_rh8d_sim/2-MuJoCo/digital_twin/v7_rh8d_ws/rh8d_digital_twin_tools/results/index_dynamic_joints_v1.png
+
+==================================================================================
+DYNAMIC REPLAY FINISHED
+==================================================================================

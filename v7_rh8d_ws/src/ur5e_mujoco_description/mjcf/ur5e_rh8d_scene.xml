@@ -1,5 +1,6 @@
 <mujoco model="UR5e and RH8D scene">
-  <include file="ur5e_rh8d.xml"/>
+  <!-- <include file="ur5e_rh8d.xml"/> -->
+  <include file="ur5e_rh8d_index_contact_v1.xml"/>
 
   <statistic center="0.3 0 0.4" extent="0.8"/>
 
@@ -49,7 +50,7 @@
           diaginertia="0.00091 0.00091 0.00014"/>
       <geom name="cylinder"
       type="cylinder"
-      size="0.030 0.075"
+      size="0.0346 0.075"
       rgba="0.1 0.6 0.1 1"
       friction="1.5 0.08 0.005"
       solref="0.025 1"

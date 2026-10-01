@@ -1,0 +1,3 @@
+model,free_mcp_rmse,free_pip_rmse,free_combined_rmse,contact_mcp,contact_pip,contact_dip,contact_rmse,middle_duty,dmcp,dpip,ddip,visual_prox_gap,visual_mid_gap,visual_tip_gap
+CONSTANT,4.489,5.617,5.085,25.999,3.206,7.849,13.64,,,,,2.0897941210259288,-2.2762769963284977,1.4310482574951207
+CONFIGDEP,11.818,11.683,11.75,24.494,3.378,12.479,13.249,,,,,2.518777951677772,-1.2970326466729436,1.9649320510088413

@@ -1,0 +1,4 @@
+V7 provisional configuration-dependent candidate
+encoder_spool_scale_um_per_tick=6.400000
+tendon_stiffness_N_per_m=2700.000000
+NOT FINAL IDENTIFIED MODEL

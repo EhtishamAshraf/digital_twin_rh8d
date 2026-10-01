@@ -1,0 +1,5 @@
+model,MCP_deg,PIP_deg,DIP_deg,free_space_RMSE_deg,contact_RMSE_deg
+Hardware contact target,14.5355,23.811,9.327,,
+Validated constant model,13.466,2.253,10.032,5.085,12.468
+Best free-preserving re-ID,10.658,8.368,8.549,6.001,9.204
+Contact-leaning constant model,5.76,17.18,5.72,9.588,6.682

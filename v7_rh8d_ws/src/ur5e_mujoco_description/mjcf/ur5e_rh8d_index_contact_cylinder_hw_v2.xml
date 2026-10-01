@@ -1,0 +1,824 @@
+<?xml version="1.0"?>
+
+<!-- 
+Notes:
+1.
+      This is MJCF file for the UR5e robot with the RH8D hand attached at the wrist.
+2.
+      For Force Sensing at the Fingertips, we add a dummy body which has the collision geom that touches the object, 
+      and the sensor reads the force transmitted from that dummy body to its parent body (e.g; Index_Distal), expressed in the sensor site frame. 
+      Reference: https://github.com/google-deepmind/mujoco/issues/399 
+-->
+
+<mujoco model="UR5e_with_RH8D">
+  <compiler angle="radian" meshdir="../meshes"/>
+   <option timestep="0.001"
+        integrator="implicitfast"
+        solver="Newton"
+        iterations="200"
+        tolerance="1e-10"
+        gravity="0 0 -9.81"
+        cone="elliptic"
+        impratio="1"
+        noslip_iterations="0"
+        noslip_tolerance="1e-6"/>
+  <size njmax="8000" nconmax="1500"/>
+
+
+  <!-- Default parameters for the simulation -->
+  <default>
+    <joint damping="0.04" frictionloss="0.0008" armature="0.002" limited="true" springref="0"/>
+    <geom contype="1" conaffinity="1" condim="6"
+          friction="1.0 0.1 0.1"
+          solref="0.01 1.0"
+          solimp="0.9 0.95 0.001"
+          margin="0.0005"/>
+
+    <!-- UR5e: default parameters: -->
+    <default class="ur5e">
+      <material specular="0.5" shininess="0.25"/>
+      <joint axis="0 1 0" range="-6.28319 6.28319" armature="0.1"/>
+      <general gaintype="fixed" biastype="affine" ctrlrange="-6.2831 6.2831" gainprm="2000" biasprm="0 -2000 -400"
+        forcerange="-150 150"/>
+      
+      <default class="size3">
+        <default class="size3_limited">
+          <joint range="-3.1415 3.1415"/>
+          <general ctrlrange="-3.1415 3.1415"/>
+        </default>
+      </default>
+     
+      <default class="size1">
+        <general gainprm="500" biasprm="0 -500 -100" forcerange="-28 28"/>
+      </default>
+     
+      <default class="visual">
+        <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+      </default>
+      
+      <default class="collision">
+        <geom type="capsule" group="3"/>
+        <default class="eef_collision">
+          <geom type="cylinder" solref="0.05 1.0" solimp="0.80 0.95 0.001" friction="1.8 0.03 0.001" condim="4" margin="0.001"/>
+        </default>
+      </default>
+
+      <site size="0.001" rgba="0.5 0.5 0.5 0.3" group="4"/>
+    </default>
+
+    <!-- RH8D: default parameters: -->
+    <default class="guide_site">
+      <site size="0.0030" rgba="1 1 0 1"/>
+    </default>
+    
+    <default class="anchor_site">
+      <site size="0.0045" rgba="1 0.2 0.2 1"/>
+    </default>
+
+    <default class="visual_mesh">
+      <geom type="mesh" contype="0" conaffinity="0"/>
+    </default>
+
+    <default class="hand_collision">
+      <geom type="capsule"
+            contype="2" conaffinity="5"
+            condim="6"
+            friction="0.5 0.05 0.05"
+            solref="0.001 1"
+            solimp="0.95 0.99 0.001"
+            margin="0.0005"
+            rgba="1 0 0 0"/>
+    </default>
+  </default>
+
+
+  <!-- Asset definitions -->
+  <asset>
+    <!-- Table: material/meshes -->
+    <material name="table" rgba="0.55 0.62 0.75 1.0" reflectance="0.18" shininess="0.1" specular="0.06"/>
+    <mesh name="table_visual" file="table/visual/table_visual.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="table_collision" file="table/collision/table_collision.stl" scale="0.001 0.001 0.001"/>
+
+    <!-- UR5e: materials/meshes -->
+    <material class="ur5e" name="black" rgba="0.033 0.033 0.033 1"/>
+    <material class="ur5e" name="jointgray" rgba="0.278 0.278 0.278 1"/>
+    <material class="ur5e" name="linkgray" rgba="0.82 0.82 0.82 1"/>
+    <material class="ur5e" name="urblue" rgba="0.49 0.678 0.8 1"/>
+    <mesh file="ur5e/assets/base_0.obj"/>
+    <mesh file="ur5e/assets/base_1.obj"/>
+    <mesh file="ur5e/assets/shoulder_0.obj"/>
+    <mesh file="ur5e/assets/shoulder_1.obj"/>
+    <mesh file="ur5e/assets/shoulder_2.obj"/>
+    <mesh file="ur5e/assets/upperarm_0.obj"/>
+    <mesh file="ur5e/assets/upperarm_1.obj"/>
+    <mesh file="ur5e/assets/upperarm_2.obj"/>
+    <mesh file="ur5e/assets/upperarm_3.obj"/>
+    <mesh file="ur5e/assets/forearm_0.obj"/>
+    <mesh file="ur5e/assets/forearm_1.obj"/>
+    <mesh file="ur5e/assets/forearm_2.obj"/>
+    <mesh file="ur5e/assets/forearm_3.obj"/>
+    <mesh file="ur5e/assets/wrist1_0.obj"/>
+    <mesh file="ur5e/assets/wrist1_1.obj"/>
+    <mesh file="ur5e/assets/wrist1_2.obj"/>
+    <mesh file="ur5e/assets/wrist2_0.obj"/>
+    <mesh file="ur5e/assets/wrist2_1.obj"/>
+    <mesh file="ur5e/assets/wrist2_2.obj"/>
+    <mesh file="ur5e/assets/wrist3.obj"/>
+
+    <!-- RH8D: meshes -->
+    <mesh name="base" file="rh8d/base.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="forearm" file="rh8d/forearm.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="palm_axis" file="rh8d/palm_axis.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="palm_assembly" file="rh8d/palm_assembly.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="thumb_base" file="rh8d/thumb_base.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="thumb_phalanx" file="rh8d/thumb_phalanx.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="tip" file="rh8d/tip.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="phalanx" file="rh8d/phalanx.stl" scale="0.001 0.001 0.001"/>
+  </asset>
+
+
+  <!-- World body definitions -->
+  <worldbody>
+
+    <!--
+      RH8D INDEX CONTACT SYSTEM-ID BOTTLE
+
+      Real measured bottle:
+          diameter = 69.2 mm
+
+      Static on purpose:
+      the water-filled bottle was effectively stationary
+      during the clean low-force calibration interval.
+    -->
+
+    <geom name="index_contact_fixture"
+          type="cylinder"
+
+          pos="0.593611823 0.884245992 1.564105533"
+
+          zaxis="0.547066086
+                 -0.067418451
+                 -0.834370092"
+
+          size="0.034600
+                0.100000"
+
+          rgba="0.1 0.65 0.25 0.55"
+
+          contype="1"
+          conaffinity="1"
+
+          priority="10"
+
+          condim="3"
+
+          friction="0.8 0.005 0.0001"
+
+          solref="-32000 -320"
+
+          solimp="0.95 0.95 0.001 0.5 2"
+
+          margin="0"/>
+
+    <light name="spotlight" mode="targetbodycom" target="wrist_2_link" pos="0 -1 2"/>
+
+    <!-- Table: -->
+    <body name="table" pos="0 0 0.73" euler="0 0 0">
+      <geom name="table_visual" type="mesh" mesh="table_visual" material="table" contype="0" conaffinity="0" 
+            group="1"/>
+      <geom name="table_base_collision" type="box" pos="0 -0.135 -0.2" size="0.90 0.36 0.2" rgba="1 0 0 0"
+            contype="1" conaffinity="1"/>
+      <geom name="table_column_collision" type="box" pos="0 0.135 0.315" size="0.05 0.09 0.400" rgba="1 0 0 0"
+            contype="1" conaffinity="1"/>
+      <geom name="table_top_collision" type="box" pos="0.0 0.135 0.69" size="0.24 0.091 0.026" rgba="1 0 0 0"
+            contype="1" conaffinity="1"/>
+      
+      <!-- UR5e: -->
+      <body name="ur5e_mounting_point" pos="0.191189 0.13475 0.555131" quat="-0.270598 -0.653281 -0.653281 -0.270598"> 
+        <body name="base" quat="1 0 0 0" childclass="ur5e">
+        <inertial mass="4.0" pos="0 0 0" diaginertia="0.00443333156 0.00443333156 0.0072"/>
+        <geom mesh="base_0" material="black" class="visual"/>
+        <geom mesh="base_1" material="jointgray" class="visual"/>
+        <body name="shoulder_link" pos="0 0 0.163">
+          <inertial mass="3.7" pos="0 0 0" diaginertia="0.0102675 0.0102675 0.00666"/>
+          <joint name="shoulder_pan_joint" class="size3" axis="0 0 1"/>
+          <geom mesh="shoulder_0" material="urblue" class="visual"/>
+          <geom mesh="shoulder_1" material="black" class="visual"/>
+          <geom mesh="shoulder_2" material="jointgray" class="visual"/>
+          <geom class="collision" size="0.06 0.06" pos="0 0 -0.04"/>
+          <body name="upper_arm_link" pos="0 0.138 0" quat="1 0 1 0">
+            <inertial mass="8.393" pos="0 0 0.2125" diaginertia="0.133886 0.133886 0.0151074"/>
+            <joint name="shoulder_lift_joint" class="size3"/>
+            <geom mesh="upperarm_0" material="linkgray" class="visual"/>
+            <geom mesh="upperarm_1" material="black" class="visual"/>
+            <geom mesh="upperarm_2" material="jointgray" class="visual"/>
+            <geom mesh="upperarm_3" material="urblue" class="visual"/>
+            <geom class="collision" pos="0 -0.04 0" quat="1 1 0 0" size="0.06 0.06"/>
+            <geom class="collision" size="0.05 0.2" pos="0 0 0.2"/>
+            <body name="forearm_link" pos="0 -0.131 0.425">
+              <inertial mass="2.275" pos="0 0 0.196" diaginertia="0.0311796 0.0311796 0.004095"/>
+              <joint name="elbow_joint" class="size3_limited"/>
+              <geom mesh="forearm_0" material="urblue" class="visual"/>
+              <geom mesh="forearm_1" material="linkgray" class="visual"/>
+              <geom mesh="forearm_2" material="black" class="visual"/>
+              <geom mesh="forearm_3" material="jointgray" class="visual"/>
+              <geom class="collision" pos="0 0.08 0" quat="1 1 0 0" size="0.055 0.06"/>
+              <geom class="collision" size="0.038 0.19" pos="0 0 0.2"/>
+              <body name="wrist_1_link" pos="0 0 0.392" quat="1 0 1 0">
+                <inertial mass="1.219" pos="0 0.127 0" diaginertia="0.0025599 0.0025599 0.0021942"/>
+                <joint name="wrist_1_joint" class="size1"/>
+                <geom mesh="wrist1_0" material="black" class="visual"/>
+                <geom mesh="wrist1_1" material="urblue" class="visual"/>
+                <geom mesh="wrist1_2" material="jointgray" class="visual"/>
+                <geom class="collision" pos="0 0.05 0" quat="1 1 0 0" size="0.04 0.07"/>
+                <body name="wrist_2_link" pos="0 0.127 0">
+                  <inertial mass="1.219" pos="0 0 0.1" diaginertia="0.0025599 0.0025599 0.0021942"/>
+                  <joint name="wrist_2_joint" axis="0 0 1" class="size1"/>
+                  <geom mesh="wrist2_0" material="black" class="visual"/>
+                  <geom mesh="wrist2_1" material="urblue" class="visual"/>
+                  <geom mesh="wrist2_2" material="jointgray" class="visual"/>
+                  <geom class="collision" size="0.04 0.06" pos="0 0 0.04"/>
+                  <geom class="collision" pos="0 0.02 0.1" quat="1 1 0 0" size="0.04 0.04"/>
+                  <body name="wrist_3_link" pos="0 0 0.1">
+                    <inertial mass="0.1889" pos="0 0.0771683 0" quat="1 0 0 1" diaginertia="0.000132134 9.90863e-05 9.90863e-05"/>
+                    <joint name="wrist_3_joint" class="size1"/>
+                    <geom material="linkgray" mesh="wrist3" class="visual"/>
+                    <geom class="eef_collision" pos="0 0.08 0" quat="1 1 0 0" size="0.04 0.02"/>
+                    <site name="attachment_site" pos="0 0.1 0" quat="-1 1 0 0"/>
+                    
+                    <!-- RH8D: -->
+                    <body name="rh8d_mounting_point" pos="0 0.1 0" quat="0 -0.707107 0 -0.707107">
+                      <geom class="visual_mesh" pos="0 0 0" quat="1 0 0 0" rgba="0.74902 0.74902 0.74902 1" mesh="base"/>
+                      <body name="forearm:1" pos="0 0 0" quat="1 0 0 0">
+                        <inertial pos="1.87963e-07 -0.0656522 -0.00271352" quat="0.498346 0.501671 -0.501575 0.498397"
+                                  mass="0.740385" diaginertia="0.00146215 0.00130925 0.000680264"/>
+                        <joint name="forearm:1--base:1" axis="0 -1 0" range="-1.5708 1.5708" damping="0.08" frictionloss="0.005"/>
+                        <geom class="visual_mesh" rgba="0.74902 0.74902 0.74902 1" mesh="forearm"/>
+                        <!-- <geom name="collision_forearm" class="hand_collision" type="capsule" fromto="0 -0.085 -0.005   0 -0.055 -0.005" size="0.0425" rgba="1 0 0 1" solref="0.05 1.0" solimp="0.80 0.95 0.001" friction="1.8 0.03 0.001" condim="4" margin="0.001"/> -->
+
+                        <body name="palm_axis:1" pos="0 -0.165 -0.01275">
+                          <inertial pos="0 0.008585 0.0125"
+                                    quat="0 0.707107 0 0.707107"
+                                    mass="0.0509809"
+                                    diaginertia="1.88432e-05 1.37535e-05 9.79681e-06"/>
+                          <joint name="palm_axis:1--forearm:1" axis="0 0 1" range="-1.5708 1.5708" damping="0.08" frictionloss="0.005"/>
+                          <geom class="visual_mesh" pos="0 0 0.0125" quat="1 0 0 0" rgba="0.74902 0.74902 0.74902 1" mesh="palm_axis"/>
+                          <!-- <geom name="collision_palm_axis" class="hand_collision" type="box" pos="0 0 0.0125" size="0.030 0.030 0.008" rgba="1 0 0 0" solref="0.05 1.0" solimp="0.80 0.95 0.001" friction="1.8 0.03 0.001" condim="4" margin="0.001"/> -->
+                          
+                          <body name="palm_assembly:1" pos="0.0265 0 0.0125" quat="0.764847 0.63682 0.022682 -0.094633">
+                            <inertial pos="-0.0428433 -0.00466111 0.0454719"
+                                      quat="0.48276 0.542533 0.210306 0.654502"
+                                      mass="0.0820994"
+                                      diaginertia="9.95214e-05 8.17343e-05 3.63353e-05"/>
+                            <joint name="palm_assembly:1--palm_axis:1"
+                                  axis="-0.98106 -0.173648 0.0858319"
+                                  range="-0.785398 0.785398"
+                                  damping="0.08" frictionloss="0.005"/>
+                            <geom class="visual_mesh"
+                                  pos="-0.0586362 -0.00572413 0.0653212"
+                                  quat="1 0 0 0"
+                                  rgba="0.74902 0.74902 0.74902 0.25"
+                                  mesh="palm_assembly"/>
+
+                            <!-- Palm collision -->
+                            <geom name="collision_palm" class="hand_collision" type="box"
+                                  pos="-0.03 -0.005 0.055"
+                                  euler="-1.47 -0.1 0.1"
+                                  size="0.05 0.035 0.0018"
+                                  rgba="1 0 0 0" solref="0.05 1.0" solimp="0.80 0.95 0.001" friction="1.8 0.03 0.001" condim="4" margin="0.001"/>
+
+                            <!-- Tendon origins -->
+                            <site name="palm_flexor_origin_idx"        class="guide_site" pos="-0.052 -0.009 0.0685"/>
+                            <site name="palm_flexor_origin_mid"        class="guide_site" pos="-0.032 -0.009 0.068"/>
+                            <site name="palm_flexor_origin_ring_small" class="guide_site" pos=" 0.006 -0.009 0.053"/>
+                            <site name="palm_flexor_origin_thumb"      class="guide_site" pos="-0.034 -0.007 0.07"/>
+
+                            <site name="palm_range_site" pos="-0.0210 -0.009 0.0475" euler="-1.45 -0.2 0.5" size="0.003" rgba="0 0 1 1"/>
+                            <!--
+                              RH8D INDEX MOTOR SPOOL — SYSTEM ID
+
+                              This invisible slide DOF represents effective
+                              motor/spool tendon displacement.
+
+                              It is NOT a finger joint.
+                            -->
+                            <body name="IndexSpoolDummy" pos="0 0 0">
+                              <inertial pos="0 0 0"
+                                        mass="1e-6"
+                                        diaginertia="1e-12 1e-12 1e-12"/>
+
+                              <joint name="index_motor_spool"
+                                     type="slide"
+                                     axis="1 0 0"
+                                     range="0 0.025"
+                                     damping="0.001"/>
+                            </body>
+
+                            <!-- Thumb -->
+                            <body name="Thumb_axis" pos="-0.0403593 -0.0128548 0.0384218" quat="0.488081 0.532913 -0.239627 -0.648352">
+                              <inertial pos="7.36614e-07 -0.0127284 0.0077996"
+                                        quat="0.90682 0.421512 -0.00114761 0.00208364"
+                                        mass="0.00876232"
+                                        diaginertia="7.9766e-07 7.76944e-07 4.56571e-07"/>
+                              <joint name="Thumb_axis--palm_assembly:1" axis="0 -0.866025 0.5" range="-0.001 1.5708" damping="0.30" frictionloss="0.005"/>
+                              <geom class="visual_mesh" pos="-2.0491e-07 -0.0143541 0.0211785" rgba="0.74902 0.74902 0.74902 1" mesh="thumb_base"/>
+
+                              <site name="th_guide_p" class="guide_site" pos="0.000 0.0060 0.0120"/>
+
+                              <body name="Thumb_Methacarpal" pos="-0.00512514 -0.0143543 0.0211784" quat="0 -1 0 0">
+                                <inertial pos="0.00506187 -0.00020374 -0.0087338"
+                                          quat="0.707662 0.0382635 -0.0379957 0.70449"
+                                          mass="0.00441372"
+                                          diaginertia="4.34031e-07 4.06754e-07 1.50155e-07"/>
+                                <joint name="Thumb_Methacarpal--Thumb_axis" axis="-1 0 0" range="0 1.5708" damping="0.08" stiffness="0.02"/>
+                                <geom class="visual_mesh" pos="0.00506254 1.23613e-07 -0.010793" rgba="0.74902 0.74902 0.74902 1" mesh="thumb_phalanx"/>
+                                <geom name="collision_thumb_meta" class="hand_collision" type="capsule"
+                                      fromto="0.005 0 0.002   0.005 0 0.026" size="0.009" rgba="1 0 0 0" solref="0.05 1.0" solimp="0.80 0.95 0.001" friction="1.8 0.03 0.001" condim="4" margin="0.001"/>
+
+                                <site name="th_guide_m" class="guide_site" pos="0.000 0.0060 0.0100"/>
+
+                                <body name="Thumb_Proximal" pos="-0.000562562 -2.35897e-07 -0.0215861">
+                                  <inertial pos="0.00506186 -0.000203737 -0.0087338"
+                                            quat="0.707662 0.0382635 -0.0379957 0.70449"
+                                            mass="0.00441372"
+                                            diaginertia="4.34031e-07 4.06754e-07 1.50155e-07"/>
+                                  <joint name="Thumb_Proximal--Thumb_Methacarpal" axis="-1 0 0" range="0 1.5708" damping="0.08" stiffness="0.02"/>
+                                  <geom class="visual_mesh" pos="0.00506253 1.26601e-07 -0.010793" rgba="0.74902 0.74902 0.74902 1" mesh="thumb_phalanx"/>
+                                  <geom name="collision_thumb_prox" class="hand_collision" type="capsule"
+                                        fromto="0.005 0 -0.016   0.005 0 0.026" size="0.007" rgba="1 0 0 0" solref="0.05 1.0" solimp="0.80 0.95 0.001" friction="1.8 0.03 0.001" condim="4" margin="0.001"/>
+
+                                  <site name="th_guide_d" class="guide_site" pos="0.000 0.0075 0.0080"/>
+
+                                  <body name="Thumb_Distal" pos="-6.23674e-05 6.16563e-07 -0.0215858">
+                                    <inertial pos="0.00560256 -0.00262057 -0.0121248"
+                                              quat="0.634633 -0.0915234 0.0968285 0.761242"
+                                              mass="0.00650951"
+                                              diaginertia="5.45458e-07 5.01126e-07 3.14326e-07"/>
+                                    <joint name="Thumb_Distal--Thumb_Proximal" axis="-1 0 0" range="0 1.5708" damping="0.08" stiffness="0.02"/>
+                                    <geom class="visual_mesh" pos="0.00506251 -1.31623e-07 0" rgba="0.74902 0.74902 0.74902 0.25" mesh="tip"/>
+
+                                    <site name="th_guide_distal" class="guide_site" pos="0.000 0.0090 0.0060"/>
+                                    <site name="th_anchor" class="anchor_site" pos="0.0045 0.0015 -0.012"/>
+
+                                    <body name="Thumb_TipDummy" pos="0 0 0">
+                                      <inertial pos="0 0 0" mass="1e-6" diaginertia="1e-12 1e-12 1e-12"/>
+                                      <geom name="collision_thumb_tip" class="hand_collision" type="capsule"
+                                            fromto="0.005 0 -0.016   0.005 0 -0.01" size="0.00778" rgba="1 0 0 0" solref="0.05 1.0" solimp="0.80 0.95 0.001" friction="1.8 0.03 0.001" condim="4" margin="0.001"/>
+                                      <site name="thumb_tip_force_site" pos="0.005 -0.0015 -0.014" quat="0 0 1 1" size="0.00778" rgba="1 0 0 0"/>
+                                    </body>
+                                  </body>
+                                </body>
+                              </body>
+                            </body>
+
+                            <!-- Index Finger -->
+                            <body name="Index_Proximal" pos="-0.0482113 -0.0207166 0.0857786" quat="0 1 0 0">
+                              <inertial pos="-0.00506278 -0.000180346 -0.0109169"
+                                        quat="0.709609 0.0289913 -0.0286909 0.703414"
+                                        mass="0.00525864"
+                                        diaginertia="5.65636e-07 5.33996e-07 1.82249e-07"/>
+                              <joint name="Index_Proximal--palm_assembly:1"
+       axis="-1 0 0"
+       range="0 1.5708"
+       damping="0.015"
+       frictionloss="0.002"
+       springref="-0.10"
+       stiffness="0.00725 0 0.0326"/>
+                              <geom class="visual_mesh" pos="-0.00506263 -1.44878e-07 -0.0129367" rgba="0.74902 0.74902 0.74902 1" mesh="phalanx"/>
+                              <geom name="collision_idx_prox" class="hand_collision" type="capsule"
+                                    fromto="-0.005 0 0.002   -0.005 0 0.026" size="0.00778" rgba="1 0 0 0" solref="0.05 1.0" solimp="0.80 0.95 0.001" friction="1.8 0.03 0.001" condim="4" margin="0.001"/>
+
+                              <site name="idx_guide_p" class="guide_site" pos="-0.010 0.0065 0.0120"/>
+
+                              <body name="Index_Middle" pos="6.24645e-05 0 -0.0258748">
+                                <inertial pos="-0.00506279 -0.000180375 -0.0109169"
+                                          quat="0.709609 0.0289913 -0.0286909 0.703414"
+                                          mass="0.00525864"
+                                          diaginertia="5.65636e-07 5.33996e-07 1.82249e-07"/>
+                                <joint name="Index_Middle--Index_Proximal"
+       axis="-1 0 0"
+       range="0 1.5708"
+       damping="0.015"
+       frictionloss="0.006"
+       springref="-0.10"
+       stiffness="0.0310"/>
+                                <geom class="visual_mesh" pos="-0.00506242 0 -0.0129376" rgba="0.74902 0.74902 0.74902 1" mesh="phalanx"/>
+                                <geom name="collision_idx_mid" class="hand_collision" type="capsule"
+                                      fromto="-0.005 0 -0.016   -0.005 0 0.026" size="0.0070" rgba="1 0 0 0" solref="0.05 1.0" solimp="0.80 0.95 0.001" friction="1.8 0.03 0.001" condim="4" margin="0.001"/>
+
+                                <site name="idx_guide_m" class="guide_site" pos="-0.010 0.0065 0.0100"/>
+
+                                <body name="Index_Distal" pos="6.2463e-05 0 -0.0258748">
+                                  <inertial pos="-0.00452224 -0.00262003 -0.0121245"
+                                            quat="0.634633 -0.0915234 0.0968285 0.761242"
+                                            mass="0.00650951"
+                                            diaginertia="5.45458e-07 5.01126e-07 3.14326e-07"/>
+                                  <joint name="Index_Distal--Index_Middle"
+       axis="-1 0 0"
+       range="0 1.5708"
+       damping="0.015"
+       stiffness="0.02"/>
+                                  <geom class="visual_mesh" pos="-0.00506253 0 4.01497e-07" rgba="0.74902 0.74902 0.74902 0.25" mesh="tip"/>
+
+                                  <site name="idx_guide_d" class="guide_site" pos="-0.010 0.0085 0.0080"/>
+                                  <site name="idx_anchor" class="anchor_site" pos="-0.0055 0.0015 -0.012"/>
+
+                                  <body name="Index_TipDummy" pos="0 0 0">
+                                    <inertial pos="0 0 0" mass="1e-6" diaginertia="1e-12 1e-12 1e-12"/>
+                                    <geom name="collision_idx_tip" class="hand_collision" type="capsule"
+                                          fromto="-0.005 0 -0.016   -0.005 0 -0.01" size="0.00778" rgba="1 0 0 0" solref="0.05 1.0" solimp="0.80 0.95 0.001" friction="1.8 0.03 0.001" condim="4" margin="0.001"/>
+                                    <site name="index_tip_force_site" pos="-0.005 -0.002 -0.014" quat="0 0 1 1" size="0.00725" rgba="1 0 0 0"/>
+                                  </body>
+                                </body>
+                              </body>
+                            </body>
+
+                            <!-- Middle Finger -->
+                            <body name="Middle_Proximal" pos="-0.0230982 -0.0192207 0.084179" quat="0.00190282 -0.998097 -0.0435779 0.043578">
+                              <inertial pos="-0.00506279 -0.000180392 -0.0109167"
+                                        quat="0.709609 0.0289913 -0.0286909 0.703414"
+                                        mass="0.00525864"
+                                        diaginertia="5.65636e-07 5.33996e-07 1.82249e-07"/>
+                              <joint name="Middle_Proximal--palm_assembly:1" axis="-1 0 0" range="0 1.5708" damping="0.08" stiffness="0.02"/>
+                              <geom class="visual_mesh" pos="-0.00506247 0 -0.0129372" rgba="0.74902 0.74902 0.74902 1" mesh="phalanx"/>
+                              <geom name="collision_mid_prox" class="hand_collision" type="capsule"
+                                    fromto="-0.005 0 0.002   -0.005 0 0.026" size="0.009" rgba="1 0 0 0" solref="0.05 1.0" solimp="0.80 0.95 0.001" friction="1.8 0.03 0.001" condim="4" margin="0.001"/>
+
+                              <site name="mid_guide_p" class="guide_site" pos="0.000 0.0065 0.0120"/>
+
+                              <body name="Middle_Middle" pos="6.24843e-05 -1.52847e-07 -0.0258742">
+                                <inertial pos="-0.00506283 -0.000180213 -0.0109177"
+                                          quat="0.709609 0.0289913 -0.0286909 0.703414"
+                                          mass="0.00525864"
+                                          diaginertia="5.65636e-07 5.33996e-07 1.82249e-07"/>
+                                <joint name="Middle_Middle--Middle_Proximal" axis="-1 0 0" range="0 1.5708" damping="0.08" stiffness="0.02"/>
+                                <geom class="visual_mesh" pos="-0.00506251 1.09878e-07 -0.0129382" rgba="0.74902 0.74902 0.74902 1" mesh="phalanx"/>
+                                <geom name="collision_mid_mid" class="hand_collision" type="capsule"
+                                      fromto="-0.005 0 -0.016   -0.005 0 0.026" size="0.0070" rgba="1 0 0 0" solref="0.05 1.0" solimp="0.80 0.95 0.001" friction="1.8 0.03 0.001" condim="4" margin="0.001"/>
+
+                                <site name="mid_guide_m" class="guide_site" pos="0.000 0.0065 0.0100"/>
+
+                                <body name="Middle_Distal" pos="6.24995e-05 0 -0.0258752">
+                                  <inertial pos="-0.00452227 -0.00261993 -0.0121249"
+                                            quat="0.634633 -0.0915234 0.0968285 0.761242"
+                                            mass="0.00650951"
+                                            diaginertia="5.45458e-07 5.01126e-07 3.14326e-07"/>
+                                  <joint name="Middle_Distal--Middle_Middle" axis="-1 0 0" range="0 1.5708" damping="0.08" stiffness="0.02"/>
+                                  <geom class="visual_mesh" pos="-0.00506248 0 -6.09795e-07" rgba="0.74902 0.74902 0.74902 0.25" mesh="tip"/>
+
+                                  <site name="mid_guide_d" class="guide_site" pos="0.000 0.0085 0.0080"/>
+                                  <site name="mid_anchor" class="anchor_site" pos="-0.0045 0.0015 -0.012"/>
+
+                                  <body name="Middle_TipDummy" pos="0 0 0">
+                                    <inertial pos="0 0 0" mass="1e-6" diaginertia="1e-12 1e-12 1e-12"/>
+                                    <geom name="collision_mid_tip" class="hand_collision" type="capsule"
+                                          fromto="-0.005 0 -0.016   -0.005 0 -0.01" size="0.00778" rgba="1 0 0 0" solref="0.05 1.0" solimp="0.80 0.95 0.001" friction="1.8 0.03 0.001" condim="4" margin="0.001"/>
+                                    <site name="middle_tip_force_site" pos="-0.005 -0.002 -0.014" quat="0 0 1 1" size="0.00725" rgba="1 0 0 0"/>
+                                  </body>
+                                </body>
+                              </body>
+                            </body>
+
+                            <!-- Ring Finger -->
+                            <body name="Ring_Proximal" pos="0.000973217 -0.0139442 0.0805959" quat="-7.86943e-05 -0.987791 -0.129626 0.0864102">
+                              <inertial pos="-0.00506284 -0.000180314 -0.0109171"
+                                        quat="0.709609 0.0289913 -0.0286909 0.703414"
+                                        mass="0.00525864"
+                                        diaginertia="5.65636e-07 5.33996e-07 1.82249e-07"/>
+                              <joint name="Ring_Proximal--palm_assembly:1" axis="-1 0 0" range="0 1.5708" damping="0.08" stiffness="0.02"/>
+                              <geom class="visual_mesh" pos="-0.00506248 0 -0.0129378" rgba="0.74902 0.74902 0.74902 1" mesh="phalanx"/>
+                              <geom name="collision_ring_prox" class="hand_collision" type="capsule"
+                                    fromto="-0.005 0 0.002   -0.005 0 0.026" size="0.009" rgba="1 0 0 0" solref="0.05 1.0" solimp="0.80 0.95 0.001" friction="1.8 0.03 0.001" condim="4" margin="0.001"/>
+
+                              <site name="ring_guide_p" class="guide_site" pos="0.000 0.0065 0.0120"/>
+
+                              <body name="Ring_Middle" pos="6.24428e-05 0 -0.0258755">
+                                <inertial pos="-0.00506274 -0.000180305 -0.0109171"
+                                          quat="0.709609 0.0289913 -0.0286909 0.703414"
+                                          mass="0.00525864"
+                                          diaginertia="5.65636e-07 5.33996e-07 1.82249e-07"/>
+                                <joint name="Ring_Middle--Ring_Proximal" axis="-1 0 0" range="0 1.5708" damping="0.08" stiffness="0.02"/>
+                                <geom class="visual_mesh" pos="-0.00506238 -1.10193e-07 -0.0129369" rgba="0.74902 0.74902 0.74902 1" mesh="phalanx"/>
+                                <geom name="collision_ring_mid" class="hand_collision" type="capsule"
+                                      fromto="-0.005 0 -0.016   -0.005 0 0.026" size="0.0070" rgba="1 0 0 0" solref="0.05 1.0" solimp="0.80 0.95 0.001" friction="1.8 0.03 0.001" condim="4" margin="0.001"/>
+
+                                <site name="ring_guide_m" class="guide_site" pos="0.000 0.0065 0.0100"/>
+
+                                <body name="Ring_Distal" pos="6.25413e-05 0 -0.0258745">
+                                  <inertial pos="-0.00452232 -0.00261989 -0.0121254"
+                                            quat="0.634633 -0.0915234 0.0968285 0.761242"
+                                            mass="0.00650951"
+                                            diaginertia="5.45458e-07 5.01126e-07 3.14326e-07"/>
+                                  <joint name="Ring_Distal--Ring_Middle" axis="-1 0 0" range="0 1.5708" damping="0.08" stiffness="0.02"/>
+                                  <geom class="visual_mesh" pos="-0.00506254 1.36101e-07 -7.35729e-07" rgba="0.74902 0.74902 0.74902 0.25" mesh="tip"/>
+
+                                  <site name="ring_guide_d" class="guide_site" pos="0.000 0.0085 0.0080"/>
+                                  <site name="ring_anchor" class="anchor_site" pos="-0.0045 0.0015 -0.012"/>
+
+                                  <body name="Ring_TipDummy" pos="0 0 0">
+                                    <inertial pos="0 0 0" mass="1e-6" diaginertia="1e-12 1e-12 1e-12"/>
+                                    <geom name="collision_ring_tip" class="hand_collision" type="capsule"
+                                          fromto="-0.005 0 -0.016   -0.005 0 -0.01" size="0.00778" rgba="1 0 0 0" solref="0.05 1.0" solimp="0.80 0.95 0.001" friction="1.8 0.03 0.001" condim="4" margin="0.001"/>
+                                    <site name="ring_tip_force_site" pos="-0.005 -0.002 -0.014" quat="0 0 1 1" size="0.00725" rgba="1 0 0 0"/>
+                                  </body>
+                                </body>
+                              </body>
+                            </body>
+
+                            <!-- Small Finger -->
+                            <body name="Small_Proximal" pos="0.0235505 -0.00577399 0.0699045" quat="-0.00757449 -0.976383 -0.173483 0.128543">
+                              <inertial pos="-0.00506278 -0.00018031 -0.0109171"
+                                        quat="0.709609 0.0289913 -0.0286909 0.703414"
+                                        mass="0.00525864"
+                                        diaginertia="5.65636e-07 5.33996e-07 1.82249e-07"/>
+                              <joint name="Small_Proximal--palm_assembly:1" axis="-1 0 0" range="0 1.5708" damping="0.08" stiffness="0.02"/>
+                              <geom class="visual_mesh" pos="-0.00506256 0 -0.0129378" rgba="0.74902 0.74902 0.74902 1" mesh="phalanx"/>
+                              <geom name="collision_sml_prox" class="hand_collision" type="capsule"
+                                    fromto="-0.005 0 0.002   -0.005 0 0.026" size="0.009" rgba="1 0 0 0" solref="0.05 1.0" solimp="0.80 0.95 0.001" friction="1.8 0.03 0.001" condim="4" margin="0.001"/>
+
+                              <site name="sml_guide_p" class="guide_site" pos="0.000 0.0065 0.0120"/>
+
+                              <body name="Small_Middle" pos="6.24423e-05 0 -0.0258752">
+                                <inertial pos="-0.00506278 -0.00018031 -0.0109171"
+                                          quat="0.709609 0.0289913 -0.0286909 0.703414"
+                                          mass="0.00525864"
+                                          diaginertia="5.65636e-07 5.33996e-07 1.82249e-07"/>
+                                <joint name="Small_Middle--Small_Proximal" axis="-1 0 0" range="0 1.5708" damping="0.08" stiffness="0.02"/>
+                                <geom class="visual_mesh" pos="-0.00506255 0 -0.0129378" rgba="0.74902 0.74902 0.74902 1" mesh="phalanx"/>
+                                <geom name="collision_sml_mid" class="hand_collision" type="capsule"
+                                      fromto="-0.005 0 -0.016   -0.005 0 0.026" size="0.0070" rgba="1 0 0 0" solref="0.05 1.0" solimp="0.80 0.95 0.001" friction="1.8 0.03 0.001" condim="4" margin="0.001"/>
+
+                                <site name="sml_guide_m" class="guide_site" pos="0.000 0.0065 0.0100"/>
+
+                                <body name="Small_Distal" pos="6.2445e-05 0 -0.0258753">
+                                  <inertial pos="-0.00452232 -0.00262 -0.0121245"
+                                            quat="0.634633 -0.0915234 0.0968285 0.761242"
+                                            mass="0.00650951"
+                                            diaginertia="5.45458e-07 5.01126e-07 3.14326e-07"/>
+                                  <joint name="Small_Distal--Small_Middle" axis="-1 0 0" range="0 1.5708" damping="0.08" stiffness="0.02"/>
+                                  <geom class="visual_mesh" pos="-0.00506244 0 0" rgba="0.74902 0.74902 0.74902 0.25" mesh="tip"/>
+
+                                  <site name="sml_guide_d" class="guide_site" pos="0.000 0.0085 0.0080"/>
+                                  <site name="sml_anchor" class="anchor_site" pos="-0.0045 0.0015 -0.012"/>
+
+                                  <body name="Small_TipDummy" pos="0 0 0">
+                                    <inertial pos="0 0 0" mass="1e-6" diaginertia="1e-12 1e-12 1e-12"/>
+                                    <geom name="collision_sml_tip" class="hand_collision" type="capsule"
+                                          fromto="-0.005 0 -0.016   -0.005 0 -0.01" size="0.00778" rgba="1 0 0 0" solref="0.05 1.0" solimp="0.80 0.95 0.001" friction="1.8 0.03 0.001" condim="4" margin="0.001"/>
+                                    <site name="small_tip_force_site" pos="-0.005 -0.002 -0.014" quat="0 0 1 1" size="0.00725" rgba="1 0 0 0"/>
+                                  </body>
+                                </body>
+                              </body>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body> 
+        </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+
+  <!-- RH8D: Spatial tendons -->
+  <tendon>
+  <!--
+    RH8D INDEX SYSTEM-ID TENDON v1
+
+    Fixed generalized tendon used during identification.
+
+    IMPORTANT:
+    These coefficients are EFFECTIVE transmission parameters,
+    not claimed physical pulley radii.
+
+    Sign convention:
+      positive joint angle = flexion
+      decreasing tendon coordinate = tendon pull
+  -->
+  <fixed name="idx_flex_spatial"
+       stiffness="1200"
+       damping="2.0"
+       springlength="-0.050 0.0">
+
+  <!-- Effective motor/spool displacement -->
+  <joint joint="index_motor_spool"
+         coef="1.0"/>
+
+  <!-- Effective finger tendon moment arms -->
+  <joint joint="Index_Proximal--palm_assembly:1"
+         coef="-0.00500"/>
+
+  <joint joint="Index_Middle--Index_Proximal"
+         coef="-0.00400"/>
+
+  <!-- DIP still provisional -->
+  <joint joint="Index_Distal--Index_Middle"
+         coef="-0.00100"/>
+
+</fixed>
+
+    <spatial name="mid_flex_spatial" rgba="1 0 1 1" width="0.002" damping="6" frictionloss="0.3">
+      <site site="palm_flexor_origin_mid"/>
+      <site site="mid_guide_p"/>
+      <site site="mid_guide_m"/>
+      <site site="mid_guide_d"/>
+      <site site="mid_anchor"/>
+    </spatial>
+
+    <spatial name="ring_flex_spatial" rgba="1 0 1 1" width="0.002" damping="6" frictionloss="0.3">
+      <site site="palm_flexor_origin_ring_small"/>
+      <site site="ring_guide_p"/>
+      <site site="ring_guide_m"/>
+      <site site="ring_guide_d"/>
+      <site site="ring_anchor"/>
+    </spatial>
+
+    <spatial name="sml_flex_spatial" rgba="1 0 1 1" width="0.002" damping="6" frictionloss="0.3">
+      <site site="palm_flexor_origin_ring_small"/>
+      <site site="sml_guide_p"/>
+      <site site="sml_guide_m"/>
+      <site site="sml_guide_d"/>
+      <site site="sml_anchor"/>
+    </spatial>
+
+    <spatial name="th_flex_spatial" rgba="1 0 1 1" width="0.002" damping="6" frictionloss="0.3">
+      <site site="palm_flexor_origin_thumb"/>
+      <site site="th_guide_p"/>
+      <site site="th_guide_m"/>
+      <site site="th_guide_d"/>
+      <site site="th_guide_distal"/>
+      <site site="th_anchor"/>
+    </spatial>
+  </tendon>
+
+  <!-- RH8D: ring and small finger are driven by the same actuator -->
+  <equality>
+    <tendon tendon1="sml_flex_spatial" tendon2="ring_flex_spatial"
+            polycoef="0 1 0 0 0"
+            solref="0.08 1.0"
+            solimp="0.90 0.99 0.002"/>
+  </equality>
+
+
+  <!-- Actuators for UR5e and RH8D -->
+  <actuator>
+    <!-- UR5e: actuators -->
+    <general class="size3" name="shoulder_pan" joint="shoulder_pan_joint"/>
+    <general class="size3" name="shoulder_lift" joint="shoulder_lift_joint"/>
+    <general class="size3_limited" name="elbow" joint="elbow_joint"/>
+    <general class="size1" name="wrist_1" joint="wrist_1_joint"/>
+    <general class="size1" name="wrist_2" joint="wrist_2_joint"/>
+    <general class="size1" name="wrist_3" joint="wrist_3_joint"/>
+
+    <!-- RH8D: wrist/palm actuators -->
+    <position name="pos_forearm" joint="forearm:1--base:1"
+              kp="35" kv="3" forcelimited="true" forcerange="-12 12"
+              ctrllimited="true" ctrlrange="-1.5708 1.5708"/>
+    <position name="pos_palm_axis" joint="palm_axis:1--forearm:1"
+              kp="35" kv="3" forcelimited="true" forcerange="-12 12"
+              ctrllimited="true" ctrlrange="-1.5708 1.5708"/>
+    <position name="pos_palm_assembly" joint="palm_assembly:1--palm_axis:1"
+              kp="35" kv="3" forcelimited="true" forcerange="-12 12"
+              ctrllimited="true" ctrlrange="-0.785398 0.785398"/>
+    <position name="pos_thumb_axis" joint="Thumb_axis--palm_assembly:1"
+              kp="35" kv="3" forcelimited="true" forcerange="-12 12"
+              ctrllimited="true" ctrlrange="0.0 1.5708"/>
+
+    <!-- RH8D: Tendon driven finger's actuators -->
+
+    <!-- RH8D staged digital-twin direct joint actuators.
+         The old tendon actuator names are kept for proximal joints so existing
+         ros2_control mappings and actuator force sensors remain valid. -->
+
+    <!--
+      One motor -> one tendon -> three passive finger joints.
+
+      v1 gains are identification starting values.
+      They are NOT frozen physical parameters.
+    -->
+    <!--
+  Motor position actuator.
+
+  During this quasi-static identification stage the spool servo
+  is intentionally stiff. Actual motor speed/delay will be added
+  later from the hardware encoder data.
+-->
+<position name="pos_index_tendon"
+          joint="index_motor_spool"
+          kp="5000"
+          kv="20"
+          ctrllimited="true"
+          ctrlrange="0 0.022"
+          forcelimited="true"
+          forcerange="-100 100"/>
+
+    <position name="pos_middle_tendon" joint="Middle_Proximal--palm_assembly:1"
+              kp="18" kv="3" forcelimited="true" forcerange="-5 5"
+              ctrllimited="true" ctrlrange="0 1.5708"/>
+    <position name="pos_middle_middle" joint="Middle_Middle--Middle_Proximal"
+              kp="16" kv="3" forcelimited="true" forcerange="-4 4"
+              ctrllimited="true" ctrlrange="0 1.5708"/>
+    <position name="pos_middle_distal" joint="Middle_Distal--Middle_Middle"
+              kp="10" kv="2" forcelimited="true" forcerange="-2.5 2.5"
+              ctrllimited="true" ctrlrange="0 0.785398"/>
+
+    <position name="pos_ring_small_tendon" joint="Ring_Proximal--palm_assembly:1"
+              kp="18" kv="3" forcelimited="true" forcerange="-5 5"
+              ctrllimited="true" ctrlrange="0 1.5708"/>
+    <position name="pos_ring_middle" joint="Ring_Middle--Ring_Proximal"
+              kp="16" kv="3" forcelimited="true" forcerange="-4 4"
+              ctrllimited="true" ctrlrange="0 1.5708"/>
+    <position name="pos_ring_distal" joint="Ring_Distal--Ring_Middle"
+              kp="10" kv="2" forcelimited="true" forcerange="-2.5 2.5"
+              ctrllimited="true" ctrlrange="0 0.785398"/>
+
+    <position name="pos_small_proximal" joint="Small_Proximal--palm_assembly:1"
+              kp="18" kv="3" forcelimited="true" forcerange="-5 5"
+              ctrllimited="true" ctrlrange="0 1.5708"/>
+    <position name="pos_small_middle" joint="Small_Middle--Small_Proximal"
+              kp="16" kv="3" forcelimited="true" forcerange="-4 4"
+              ctrllimited="true" ctrlrange="0 1.5708"/>
+    <position name="pos_small_distal" joint="Small_Distal--Small_Middle"
+              kp="10" kv="2" forcelimited="true" forcerange="-2.5 2.5"
+              ctrllimited="true" ctrlrange="0 0.785398"/>
+
+    <position name="pos_thumb_tendon" joint="Thumb_Methacarpal--Thumb_axis"
+              kp="16" kv="3" forcelimited="true" forcerange="-4 4"
+              ctrllimited="true" ctrlrange="0 1.5708"/>
+    <position name="pos_thumb_proximal" joint="Thumb_Proximal--Thumb_Methacarpal"
+              kp="18" kv="3" forcelimited="true" forcerange="-5 5"
+              ctrllimited="true" ctrlrange="0 1.5708"/>
+    <position name="pos_thumb_distal" joint="Thumb_Distal--Thumb_Proximal"
+              kp="10" kv="2" forcelimited="true" forcerange="-2.5 2.5"
+              ctrllimited="true" ctrlrange="0 0.785398"/>
+
+  </actuator>
+
+
+  <!-- RH8D: Sensors including TOF and force sensors -->
+  <sensor>
+    <!-- Tendon positions -->
+    <tendonpos name="len_index"  tendon="idx_flex_spatial"/>
+    <tendonpos name="len_middle" tendon="mid_flex_spatial"/>
+    <tendonpos name="len_ring"   tendon="ring_flex_spatial"/>
+    <tendonpos name="len_small"  tendon="sml_flex_spatial"/>
+    <tendonpos name="len_thumb"  tendon="th_flex_spatial"/>
+
+    <!-- Tendon Actuator forces -->
+    <actuatorfrc name="frc_index"  actuator="pos_index_tendon"/>
+    <actuatorfrc name="frc_middle" actuator="pos_middle_tendon"/>
+    <actuatorfrc name="frc_ring"   actuator="pos_ring_small_tendon"/>
+    <actuatorfrc name="frc_thumb"  actuator="pos_thumb_tendon"/>
+
+    <!-- Palm distance sensor -->
+    <rangefinder name="palm_range" site="palm_range_site"/>
+
+    <!-- 3-axis fingertip force sensors -->
+    <force name="thumb_tip_force"  site="thumb_tip_force_site"/>
+    <force name="index_tip_force"  site="index_tip_force_site"/>
+    <force name="middle_tip_force" site="middle_tip_force_site"/>
+    <force name="ring_tip_force"   site="ring_tip_force_site"/>
+    <force name="small_tip_force"  site="small_tip_force_site"/>
+  </sensor>
+
+
+  <!-- RH8D: Contact excludes -->
+  <contact>
+    <exclude body1="forearm:1" body2="palm_axis:1"/>
+    <exclude body1="palm_axis:1" body2="palm_assembly:1"/>
+    <exclude body1="Thumb_axis" body2="Thumb_Methacarpal"/>
+    <exclude body1="Thumb_Methacarpal" body2="Thumb_Proximal"/>
+    <exclude body1="Thumb_Proximal" body2="Thumb_Distal"/>
+    <exclude body1="Index_Proximal" body2="Index_Middle"/>
+    <exclude body1="Index_Middle" body2="Index_Distal"/>
+    <exclude body1="Middle_Proximal" body2="Middle_Middle"/>
+    <exclude body1="Middle_Middle" body2="Middle_Distal"/>
+    <exclude body1="Ring_Proximal" body2="Ring_Middle"/>
+    <exclude body1="Ring_Middle" body2="Ring_Distal"/>
+    <exclude body1="Small_Proximal" body2="Small_Middle"/>
+    <exclude body1="Small_Middle" body2="Small_Distal"/>
+    <exclude body1="palm_assembly:1" body2="Index_Proximal"/>
+    <exclude body1="palm_assembly:1" body2="Index_Middle"/>
+    <exclude body1="palm_assembly:1" body2="Index_Distal"/>
+    <exclude body1="palm_assembly:1" body2="Middle_Proximal"/>
+    <exclude body1="palm_assembly:1" body2="Middle_Middle"/>
+    <exclude body1="palm_assembly:1" body2="Middle_Distal"/>
+    <exclude body1="palm_assembly:1" body2="Ring_Proximal"/>
+    <exclude body1="palm_assembly:1" body2="Ring_Middle"/>
+    <exclude body1="palm_assembly:1" body2="Ring_Distal"/>
+    <exclude body1="palm_assembly:1" body2="Small_Proximal"/>
+    <exclude body1="palm_assembly:1" body2="Small_Middle"/>
+    <exclude body1="palm_assembly:1" body2="Small_Distal"/>
+    <exclude body1="palm_assembly:1" body2="Thumb_axis"/>
+    <exclude body1="palm_assembly:1" body2="Thumb_Methacarpal"/>
+    <exclude body1="palm_assembly:1" body2="Thumb_Proximal"/>
+    <exclude body1="palm_assembly:1" body2="Thumb_Distal"/>
+  </contact>
+
+</mujoco>

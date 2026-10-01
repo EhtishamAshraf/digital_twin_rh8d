@@ -1,0 +1,5 @@
+name,pip_stiffness,pip_frictionloss,pip_damping,free_mcp,free_pip,free_combined,contact_mcp,contact_pip,contact_dip,contact_rmse
+BASELINE,0.031,0.006,0.015,4.489,5.617,5.085,25.999,3.206,7.849,13.64
+NO_PIP_FRICTION,0.031,0.0,0.015,6.035,8.894,7.6,22.406,11.41,6.482,8.638
+NO_PIP_SPRING,0.0,0.006,0.015,14.822,46.695,34.642,22.134,12.919,7.043,7.78
+NO_PIP_SPRING_OR_FRICTION,0.0,0.0,0.015,16.607,49.849,37.153,10.144,33.773,1.134,7.867
