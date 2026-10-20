@@ -1,0 +1,2 @@
+case,tendon_k,prescribed,mcp_deg,pip_deg,dip_deg,rmse_deg,mid_on,mid_off,tip_on,tip_off,middle_to_tip_delay_s,middle_to_tip_dPIP_deg,middle_to_tip_dDIP_deg,first_mid_MCP,first_mid_PIP,first_mid_DIP,max_pre_step_error_mm,max_post_step_drift_mm,target_mid_gap_mm,target_tip_gap_mm
+P7_FREEFIT_CONTACT,4839.6307593841275,True,21.55,6.168,22.513,13.346026315599213,1,0,0,0,nan,nan,nan,21.939401419622794,2.976832732269717,14.430289084583729,0.04249536484369522,0.04214014231664152,-0.4282822047633642,1.434637017424737

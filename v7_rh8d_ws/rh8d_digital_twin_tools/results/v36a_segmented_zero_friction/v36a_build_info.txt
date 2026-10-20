@@ -1,0 +1,9 @@
+V36A segmented cable architecture
+source=/home/ehtisham/Desktop/Robotics_uclv/03_PROJECTS/P1_rh8d_sim/2-MuJoCo/digital_twin/v7_rh8d_ws/src/ur5e_mujoco_description/mjcf/ur5e_rh8d_index_cad_spatial_v35i1_best.xml
+working_xml=/home/ehtisham/Desktop/Robotics_uclv/03_PROJECTS/P1_rh8d_sim/2-MuJoCo/digital_twin/v7_rh8d_ws/src/ur5e_mujoco_description/mjcf/ur5e_rh8d_index_segmented_v36a.xml
+TOTAL_K=9000.0
+TOTAL_DAMPING=12.0
+L_total=0.07689188806816655
+MCP: L=0.013859652904592231 K=49931.047868031674 D=66.5747304907089
+PIP: L=0.025681631902552023 K=26946.379234753036 D=35.92850564633738
+DIP: L=0.03735060326102229 K=18527.866545482888 D=24.70382206064385

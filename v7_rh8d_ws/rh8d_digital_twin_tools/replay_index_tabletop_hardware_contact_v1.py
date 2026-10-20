@@ -229,12 +229,11 @@ def main():
             0.0001,
         ]
 
-        model.geom_solref[
-            gid
-        ] = [
-            -CONTACT_STIFFNESS,
-            -CONTACT_DAMPING,
-        ]
+        if __import__("os").environ.get("RH8D_PRESERVE_XML_SOLREF", "0") != "1":
+            model.geom_solref[gid] = [
+                -CONTACT_STIFFNESS,
+                -CONTACT_DAMPING,
+            ]
 
 
     actuator = simbase.oid(

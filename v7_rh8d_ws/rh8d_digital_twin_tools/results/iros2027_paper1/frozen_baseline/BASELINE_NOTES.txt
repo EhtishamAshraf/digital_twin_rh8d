@@ -1,0 +1,29 @@
+IROS 2027 — RH8D Paper 1
+
+Date: 2026-10-20
+
+Historical V43 baseline:
+  Coupling K = 750
+  Rest angle difference = 20 degrees
+  Actual replay contact K = 1000 N/m
+  Actual replay contact D = 20 Ns/m
+  RH8D_PRESERVE_XML_SOLREF = 0
+
+Reported fitted contact-pose RMSE:
+  0.7043 degrees
+
+Final replay pose RMSE:
+  1.5451 degrees
+
+Known limitations:
+  Free-motion trajectory error remains significant.
+  Large transient contact-force spikes occur.
+  Contact object was not perfectly fixed in hardware.
+  No independent generalization claim yet.
+
+Do not treat archived XML alone as a fully reproducible
+model: preserve its mesh dependencies and replay software.
+
+Next objective:
+  Hardware-informed compliant transmission identification
+  using complete loading-hold-unloading trajectories.
